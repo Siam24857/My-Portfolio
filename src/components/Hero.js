@@ -2,96 +2,131 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import porfolioimg from "../asset/Profilio.jpeg"
 
 export default function Hero() {
-  const subtitleRef = useRef(null);
   const containerRef = useRef(null);
+  const textRef = useRef(null);
+  const shapesRef = useRef(null);
 
   useEffect(() => {
-    // GSAP reveal for subtitle
-    gsap.fromTo(
-      subtitleRef.current,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, delay: 1, ease: "power3.out" }
-    );
+    const ctx = gsap.context(() => {
+      // Staggered text reveal
+      gsap.from(".reveal-text", {
+        y: 100,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power3.out",
+        delay: 0.5,
+      });
 
-    // Subtle background drift
-    gsap.to(".bg-orb", {
-      x: "random(-50, 50)",
-      y: "random(-50, 50)",
-      duration: 10,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
+      // Floating background shapes
+      gsap.to(".float-shape", {
+        y: "random(-20, 20)",
+        x: "random(-20, 20)",
+        rotation: "random(-10, 10)",
+        duration: "random(3, 5)",
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
   }, []);
 
-  const name = "Daniel";
-  const nameChars = name.split("");
-
   return (
-    <section
-      ref={containerRef}
-      className="min-h-screen flex flex-col justify-center px-margin-page pt-32 pb-section-gap max-w-container-max mx-auto relative overflow-hidden"
-    >
-      {/* Background Glow Orbs */}
-      <div className="bg-orb absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-primary-container/20 blur-[150px] rounded-full -z-10"></div>
-      <div className="bg-orb absolute bottom-[10%] left-[-5%] w-[400px] h-[400px] bg-secondary-container/10 blur-[120px] rounded-full -z-10"></div>
+    <section ref={containerRef} className="pt-32 pb-20 md:pt-48 md:pb-32 px-6 relative overflow-hidden" id="home">
+      {/* Background Banner */}
+      <div className="absolute top-0 left-0 w-full h-[60vh] md:h-[80vh] overflow-hidden -z-10">
+        <div className="absolute inset-0 bg-gradient-to-b from-dark-bg/0 via-dark-bg/60 to-dark-bg z-10"></div>
+        <motion.img
+          initial={{ scale: 1.2, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.15 }}
+          transition={{ duration: 2, ease: "easeOut" }}
+          src="https://lh3.googleusercontent.com/aida/ADBb0ujjFnkq_C6ttfc5Wo-Gg1OitqDZA7CIMPBva3eKE3anwOIBut5R7tRfZyRq40-dFvSxt4glbxfOLiyKjQ8L6JSr9NbXulKLstRYvvuhFZGLU1XXC06emTesQBKZnLuwm7RcqEOl1QPX53DFp-DlvN_Gii8QvjYRCgmmObbvPKGINL2cxVOYFYTVmjqRdggPwmdVCH0SFTDG0munSKFhO4yUYORlphpmWL7_crebrzB2rFl8I11KXyQ1neZzlJAjmaeZmAYnC7_WOQ"
+          alt="Banner Background"
+          className="w-full h-full object-cover grayscale blur-sm"
+        />
+      </div>
 
-      <div className="flex flex-col gap-6 max-w-2xl relative z-10">
-        <motion.span
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="font-code-sm text-primary tracking-[0.3em] uppercase"
-        >
-          Software Engineer
-        </motion.span>
-
-        <h1 className="font-display-xl text-display-xl text-secondary-container drop-shadow-[0_0_15px_rgba(210,240,0,0.4)] flex overflow-hidden">
-          {nameChars.map((char, index) => (
-            <motion.span
-              key={index}
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.2 + index * 0.1,
-                ease: [0.33, 1, 0.68, 1],
-              }}
-              className="inline-block"
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
+        {/* Hero Content */}
+        <div ref={textRef} className="relative z-20">
+          <div className="reveal-text">
+            <h2 className="text-3xl font-light mb-4">Hello <span className="text-coral-accent">.</span></h2>
+          </div>
+          <div className="reveal-text flex items-center mb-6">
+            <div className="section-line mr-4"></div>
+            <p className="text-2xl font-light">I'm Sheikh Siam</p>
+          </div>
+          <div className="reveal-text">
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-10 leading-tight">Full-Stack- <br />Developer</h1>
+          </div>
+          <div className="reveal-text flex flex-wrap gap-4">
+            <motion.a
+              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 122, 92, 0.4)" }}
+              whileTap={{ scale: 0.95 }}
+              href="#contacts"
+              className="bg-coral-accent text-white px-8 py-3 rounded-sm font-semibold transition-all inline-block"
             >
-              {char}
-            </motion.span>
-          ))}
-        </h1>
-
-        <p
-          ref={subtitleRef}
-          className="font-body-lg text-body-lg text-on-surface-variant"
-        >
-          Self-taught programmer motivated by passion and personal projects.
-          Expert of searching bugs on Google and quickly scanning the best
-          StackOverflow answers.
-        </p>
-
-        <div className="flex gap-gutter mt-8">
-          <motion.button
-            whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(57, 255, 20, 0.4)" }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-primary-container text-on-primary font-bold px-10 py-4 rounded-lg glow-box transition-all"
-          >
-            Contact Me
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(57, 255, 20, 0.1)" }}
-            whileTap={{ scale: 0.95 }}
-            className="border border-primary-container text-primary-container font-bold px-10 py-4 rounded-lg flex items-center gap-2 transition-all"
-          >
-            Learn More{" "}
-            <span className="material-symbols-outlined">arrow_forward</span>
-          </motion.button>
+              Got a project?
+            </motion.a>
+            <motion.a
+              whileHover={{ scale: 1.05, borderColor: "#ff7a5c" }}
+              whileTap={{ scale: 0.95 }}
+              href="#contacts"
+              className="border border-white/30 px-8 py-3 rounded-sm font-semibold transition-all inline-block"
+            >
+              My resume
+            </motion.a>
+          </div>
         </div>
+
+        {/* Hero Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, clipPath: "circle(0% at 50% 50%)" }}
+          animate={{ opacity: 1, scale: 1, clipPath: "circle(100% at 50% 50%)" }}
+          transition={{ duration: 1.2, ease: "easeOut", delay: 0.8 }}
+          className="relative flex justify-center items-center"
+        >
+          <div className="relative w-80 h-80 md:w-[450px] md:h-[450px]">
+            <div className="hero-glow"></div>
+            {/* Decorative border circle */}
+            <motion.div
+              animate={{ scale: [1.1, 1.15, 1.1] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 border-2 border-coral-accent/30 rounded-full"
+            ></motion.div>
+            <motion.div
+              animate={{ scale: [1.25, 1.2, 1.25] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 border-2 border-coral-accent/20 rounded-full"
+            ></motion.div>
+            {/* Main User Photo */}
+            <div className="relative z-10 w-full h-full rounded-full overflow-hidden border-4 border-dark-card shadow-2xl">
+              <img
+                alt="Jensen Omega"
+                className="w-full h-full object-cover object-top"
+                src="https://www.image2url.com/r2/default/images/1778264415757-4d33eeed-bf69-4b3d-b55c-a6ce978878ec.jpeg"
+              />
+            </div>
+            {/* Geometric Shapes */}
+            <div className="float-shape absolute -top-10 -left-10 opacity-40">
+              <svg className="text-coral-accent fill-current" height="60" viewBox="0 0 60 60" width="60">
+                <path d="M10,0 L0,10 L20,30 L0,50 L10,60 L40,30 Z" opacity="0.3"></path>
+                <path d="M30,0 L20,10 L40,30 L20,50 L30,60 L60,30 Z"></path>
+              </svg>
+            </div>
+            <div className="float-shape absolute -bottom-10 -right-10 opacity-40 rotate-180">
+              <svg className="text-coral-accent fill-current" height="60" viewBox="0 0 60 60" width="60">
+                <path d="M10,0 L0,10 L20,30 L0,50 L10,60 L40,30 Z" opacity="0.3"></path>
+                <path d="M30,0 L20,10 L40,30 L20,50 L30,60 L60,30 Z"></path>
+              </svg>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

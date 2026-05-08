@@ -1,21 +1,21 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
 import Skills from "@/components/Skills";
+import About from "@/components/About";
 import Projects from "@/components/Projects";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="relative">
+    <div className="relative scroll-smooth">
       <Navbar />
       <main>
         <Hero />
-        <About />
         <Skills />
-        <div id="work" />
+        <About />
         <Projects />
-        <div id="contact" />
+        <Contact />
       </main>
       <Footer />
     </div>

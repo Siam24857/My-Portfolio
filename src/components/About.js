@@ -3,125 +3,112 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
-import profileimg from "../asset/Profilio.jpeg";
 
 export default function About() {
-  const sectionRef = useRef(null);
-  const portraitRef = useRef(null);
+  const statsRef = useRef(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+    
+    const ctx = gsap.context(() => {
+      // Number tweening for stats
+      const stats = gsap.utils.toArray(".stat-number");
+      stats.forEach((stat) => {
+        const endValue = parseInt(stat.getAttribute("data-value"));
+        gsap.fromTo(stat, 
+          { textContent: 0 },
+          {
+            textContent: endValue,
+            duration: 2,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: stat,
+              start: "top 85%",
+            },
+            snap: { textContent: 1 },
+          }
+        );
+      });
+    }, statsRef);
 
-    // Section reveal
-    gsap.fromTo(
-      sectionRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-        },
-      }
-    );
-
-    // Parallax shift for portrait
-    gsap.to(portraitRef.current, {
-      y: -50,
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
+    return () => ctx.revert();
   }, []);
 
-  const terminalLines = [
-    { text: 'class Daniel {', delay: 0 },
-    { text: '  constructor() {', delay: 0.2 },
-    { text: '    this.focus = ["Efficiency", "Scalability"];', delay: 0.4 },
-    { text: '    this.fuel = "Coffee & Documentation";', delay: 0.6 },
-    { text: '    this.philosophy = "Code is poetry for machines.";', delay: 0.8 },
-    { text: '  }', delay: 1.0 },
-    { text: '  getMission() {', delay: 1.2 },
-    { text: '    // Translating complex business logic into seamless UI experiences.', delay: 1.4 },
-    { text: '  }', delay: 1.6 },
-    { text: '}', delay: 1.8 },
+  const services = [
+    {
+      title: "Website Development",
+      icon: (
+        <svg className="w-8 h-8 text-coral-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+        </svg>
+      ),
+    },
+    {
+      title: "App Development",
+      icon: (
+        <svg className="w-8 h-8 text-coral-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+        </svg>
+      ),
+    },
+    {
+      title: "Website Hosting",
+      icon: (
+        <svg className="w-8 h-8 text-coral-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"></path>
+        </svg>
+      ),
+    },
+  ];
+
+  const stats = [
+    { value: "120", suffix: "+", label: "Completed Projects" },
+    { value: "95", suffix: "%", label: "Client satisfaction" },
+    { value: "10", suffix: "+", label: "Years of experience" },
   ];
 
   return (
-    <section
-      id="about"
-      ref={sectionRef}
-      className="px-margin-page py-section-gap max-w-container-max mx-auto overflow-hidden"
-    >
-      <div className="flex flex-col md:flex-row gap-gutter">
-        <div className="w-full md:w-1/2 flex flex-col gap-base">
-          <div className="font-code-sm text-primary-fixed mb-4">0. ABOUT_ME</div>
-          <h2 className="font-headline-lg text-headline-lg mb-8">
-            Architecting Digital <span className="text-primary-container">Ecosystems</span>
-          </h2>
-          <div className="glass-card p-gutter rounded-xl font-code-sm text-on-surface-variant leading-relaxed glow-box relative">
-            <div className="flex gap-2 mb-4">
-              <div className="w-3 h-3 rounded-full bg-red-500/50"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500/50"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
-            </div>
-
-            <div className="space-y-1">
-              {terminalLines.map((line, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: line.delay }}
-                  className="whitespace-pre"
-                >
-                  {line.text}
-                </motion.div>
-              ))}
-            </div>
-          </div>
+    <section className="py-24 px-6 overflow-hidden" id="about">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-16 md:items-center">
+        {/* Left: Services List */}
+        <div className="w-full md:w-1/2 space-y-12">
+          {services.map((service, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ x: 10, scale: 1.02 }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-6 group cursor-default"
+            >
+              <div className="w-16 h-16 flex items-center justify-center bg-dark-card border border-white/10 rounded-lg group-hover:border-coral-accent transition-colors shadow-lg">
+                {service.icon}
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold">{service.title}</h3>
+                <div className="h-1 bg-coral-accent mt-1 w-8"></div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        <div className="w-full md:w-1/2 relative min-h-[400px] flex items-center justify-center">
-          <motion.div
-            ref={portraitRef}
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="relative w-full aspect-square max-w-[400px]"
-          >
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 border-[0.5px] border-primary-container/30 rounded-full"
-            ></motion.div>
-            <motion.div
-              animate={{ rotate: -360 }}
-              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-4 border-[0.5px] border-secondary-container/20 rounded-full"
-            ></motion.div>
-            <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute inset-10 overflow-hidden rounded-full"
-            >
-              <Image
-                alt="Daniel's Portrait"
-                className="object-cover w-full h-full hover:grayscale-0 transition-all duration-700 object-center"
-                src={profileimg}
-                placeholder="blur"
-              />
-            </motion.div>
-          </motion.div>
+        {/* Right: About Description */}
+        <div className="w-full md:w-1/2">
+          <h2 className="text-5xl font-extrabold mb-8">About me</h2>
+          <p className="text-text-muted leading-relaxed mb-12 max-w-lg">
+            I started my software journey from photography. Through that, I learned to love the process of creating from scratch. Since then, this has led me to software development as it fulfills my love for learning and building things.
+          </p>
+          <div ref={statsRef} className="flex gap-12 md:gap-20">
+            {stats.map((stat, index) => (
+              <div key={index}>
+                <div className="text-4xl font-bold flex items-center">
+                  <span className="stat-number" data-value={stat.value}>0</span>
+                  <span className="text-coral-accent ml-1">{stat.suffix}</span>
+                </div>
+                <p className="text-xs text-text-muted uppercase tracking-widest mt-2">
+                  {stat.label.split(' ').map((word, i) => <span key={i} className="block">{word}</span>)}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
