@@ -4,7 +4,26 @@ import { gsap } from "gsap";
 
 export default function Skills() {
   const tickerRef = useRef(null);
-  const skills = ["HTML5", "CSS", "JAVASCRIPT", "NODE.JS", "REACT", "GIT", "GITHUB"];
+const skills = [
+  "HTML5",
+  "CSS3",
+  "TAILWIND CSS",
+  "JAVASCRIPT",
+  "REACT",
+  "NEXT.JS",
+  "NODE.JS",
+  "EXPRESS.JS",
+  "MONGODB",
+  "FIREBASE",
+  "JWT",
+  "FRAMER MOTION",
+  "SOCKET.IO",
+  "GIT",
+  "GITHUB",
+  "RESPONSIVE DESIGN",
+  "UI/UX DESIGN",
+  "FIGMA",
+];
   // Duplicate for seamless loop
   const displaySkills = [...skills, ...skills, ...skills];
 

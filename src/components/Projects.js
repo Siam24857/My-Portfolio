@@ -3,15 +3,22 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import Allrooms from "../asset/All-rooms.png"
+import Digitaltech from "../asset/Digfitalt-tech.png"
+import Keenkeper from "../asset/Keenkeper.png"
+import Skillshaper from "../asset/Skillshaper.png"
+import Studyrooms from "../asset/study-rooms.png"
+import Image from "next/image";
+ const MotionImage = motion(Image);
 export default function Projects() {
+ 
   const containerRef = useRef(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // Parallax effect on project thumbnails
+     
       const visuals = gsap.utils.toArray(".project-visual");
       visuals.forEach((visual) => {
         gsap.to(visual, {
@@ -19,7 +26,7 @@ export default function Projects() {
           ease: "none",
           scrollTrigger: {
             trigger: visual,
-            start: "top bottom",
+            start: "top bottom", 
             end: "bottom top",
             scrub: true,
           }
@@ -42,9 +49,14 @@ export default function Projects() {
           <motion.div
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.6 }}
-            className="bg-black/60 font-mono text-[10px] p-6 text-green-400 leading-relaxed"
+            className=" font-mono text-[10px] p-6 text-green-400 leading-relaxed"
           >
-            <div className="opacity-70 mb-2">// Terminal View</div>
+            <Image
+              src={Skillshaper} 
+              alt="Battleship Project Thumbnail"
+              className="rounded shadow-lg cursor-pointer"  
+            />
+            {/* <div className="opacity-70 mb-2"> Terminal View</div>
             Hit!<br />
             Enter a location to strike i.e., 'A2' from A-J and 0-9 F2<br />
             Miss!<br />
@@ -54,7 +66,8 @@ export default function Projects() {
             Hit!<br />
             Enter a location to strike i.e., 'A2' from A-J and 0-9 D3<br />
             Hit!<br />
-            You sunk a Cruiser. There are 4 ships left!
+            You sunk a Cruiser. There are 4 ships left! */}
+
           </motion.div>
         </div>
       ),
@@ -67,19 +80,20 @@ export default function Projects() {
       link: "https://b13-7-as-2026.netlify.app",
       visual: (
         <div className="grid grid-cols-2 gap-4">
-          <motion.img
-            whileHover={{ scale: 1.1, rotate: -2 }}
-            alt="Movie Project Thumbnail 1"
-            className="rounded shadow-lg cursor-pointer"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmz5zVKmNzciJIutTbOafXhjJInAfjGzcBZFXtdkWMhJMoxEz0izcRVEejJOVoCZhfyrOdMWTopDe2m3SKb9ZXLROKJJHfkXtmiEJoiUaIUaUiZs9ugwhAVRXd3j_0JrhhV7sPxUyU7YeA6ORhUXMs0q-mJSNd9-0U5cF0CpppxOfP2ji3cvUztZmmajT45OIabaMTarb13jCa3bqOO_d2h7DMSzTuePprtxd8X0YtE-awa0CTYZldSJfillwJbzyT7UkL2CdQ5eAW"
-          />
-          <motion.img
-            whileHover={{ scale: 1.1, rotate: 2 }}
-            alt="Movie Project Thumbnail 2"
-            className="rounded shadow-lg mt-8 cursor-pointer"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk_vMKWyjwSm07xpkGvXdg_L4o2y9d-yjNT33f8V0cYYcWOlB9B5su5EPGy80V9VkuQ5n597992yXubTSKSmibRDrcH6Ri_9YQRjVwyW7efxHZih_jgWvYTiWW2fnJYioDsLmBpWbY7nE3KZYCciaiAvh91mGhLetA0VmD4O0gNAWEr-rYVuINxxcDAJk6nbp4AcopG1kiRiaJ4mjrYM3yrLw3pVMlSQmg8_WivVxI807lkohqhNTHYbEaBlRmQf6Y7cOGesWOEair"
-          />
-        </div>
+  <MotionImage
+    whileHover={{ scale: 1.1, rotate: -2 }}
+    src={Studyrooms}
+    alt="Movie Project Thumbnail 1"
+    className="rounded shadow-lg cursor-pointer"
+  />
+
+  <MotionImage
+    whileHover={{ scale: 1.1, rotate: 2 }}
+    src={Allrooms}
+    alt="Movie Project Thumbnail 2"
+    className="rounded shadow-lg mt-8 cursor-pointer"
+  />
+</div>
       ),
     },
     {
@@ -95,15 +109,20 @@ export default function Projects() {
             transition={{ duration: 0.6 }}
             className="bg-black/60 font-mono text-[10px] p-6 text-blue-300 leading-relaxed"
           >
-            <div className="text-yellow-400">console</div>.log(<span className="text-coral-accent">'The result is '</span> + (a * b));<br />
+            {/* <div className="text-yellow-400">console</div>.log(<span className="text-coral-accent">'The result is '</span> + (a * b));<br />
             {"}"} <span className="text-pink-400">else if</span> (prompt === <span className="text-coral-accent">'/'</span>) {"{"}<br />
             &nbsp;&nbsp;<div className="text-yellow-400">console</div>.log(<span className="text-coral-accent">'The result is '</span> + (a / b));<br />
             {"}"}<br /><br />
-            <span className="text-gray-500">// trying to get the operation from user</span><br />
+            <span className="text-gray-500"> trying to get the operation from user</span><br />
             <span className="text-pink-400">if</span> (prompt === <span className="text-coral-accent">'+'</span> || prompt === <span className="text-coral-accent">'-'</span> || prompt === <span className="text-coral-accent">'*'</span> || prompt === <span className="text-coral-accent">'/'</span>) {"{"}<br />
             &nbsp;&nbsp;twoInput();<br />
             &nbsp;&nbsp;calculateNum(num1, num2);<br />
-            {"}"}
+            {"}"} */}
+            <Image
+              src={Digitaltech} 
+              alt="Battleship Project Thumbnail"
+              className="rounded shadow-lg cursor-pointer"  
+            />
           </motion.div>
         </div>
       ),
@@ -119,13 +138,13 @@ export default function Projects() {
           whileHover={{ y: -10 }}
           className="bg-white rounded-md overflow-hidden border border-white/10 shadow-2xl"
         >
-          <div className="bg-gray-100 flex items-center px-4 py-2 border-b">
+          {/* <div className="bg-gray-100 flex items-center px-4 py-2 border-b">
             <div className="flex space-x-1 mr-4">
               <div className="w-2 h-2 rounded-full bg-red-400"></div>
               <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
               <div className="w-2 h-2 rounded-full bg-green-400"></div>
             </div>
-            <div className="text-[8px] bg-white text-gray-400 px-4 py-0.5 rounded-full w-48">https://saas-demo.jensen.io</div>
+          <div className="text-[8px] bg-white text-gray-400 px-4 py-0.5 rounded-full w-48">https://saas-demo.jensen.io</div>
           </div>
           <div className="p-8 text-black">
             <div className="flex justify-between items-center mb-10">
@@ -139,7 +158,12 @@ export default function Projects() {
               <h4 className="text-xl font-extrabold leading-tight mb-2">Empowering teams with the freedom</h4>
               <p className="text-[8px] text-gray-500">Own the unlimited power of the web development.</p>
             </div>
-          </div>
+          </div> */}
+          <Image
+              src={Keenkeper} 
+              alt="Battleship Project Thumbnail"
+              className="rounded shadow-lg cursor-pointer"  
+            />
         </motion.div>
       ),
     },
@@ -153,7 +177,6 @@ export default function Projects() {
           <div className="section-line mx-auto"></div>
         </div>
 
-        {/* Project Grid */}
         <div className="space-y-32">
           {projects.map((project, index) => (
             <div
