@@ -310,7 +310,7 @@ export default function About() {
             {/* CTA Buttons */}
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 pt-4">
               <motion.a
-                href="#contact"
+                href="#contacts"
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
                 className="inline-flex items-center gap-2.5 bg-coral-accent text-white text-sm font-semibold px-6 py-3 rounded-lg shadow-[0_0_0_0_rgba(255,107,107,0.4)] hover:shadow-[0_0_28px_rgba(255,107,107,0.45)] transition-shadow duration-300"
