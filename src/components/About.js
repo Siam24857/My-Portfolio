@@ -54,7 +54,7 @@ const SERVICES = [
 ];
 
 const STATS = [
-  { value: 10, suffix: "+", label: "Personal Projects" },
+  { value: 30, suffix: "+", label: "Personal Projects" },
   { value: 1, suffix: "+", label: "Years Learning" },
   { value: 8, suffix: "+", label: "Technologies" },
 ];
@@ -62,17 +62,17 @@ const STATS = [
 const SKILLS = [
   { label: "HTML & CSS", pct: 90, color: "from-[#ff6b6b] to-orange-400" },
   { label: "JavaScript", pct: 85, color: "from-[#ff6b6b] to-orange-400" },
-  { label: "React.js", pct: 80, color: "from-[#ff6b6b] to-orange-400" },
-  { label: "Next.js", pct: 75, color: "from-[#ff6b6b] to-orange-400" },
-  { label: "Node.js & Express.js", pct: 70, color: "from-[#ff6b6b] to-orange-400" },
-  { label: "MongoDB", pct: 70, color: "from-[#ff6b6b] to-orange-400" },
+  { label: "React.js", pct: 85, color: "from-[#ff6b6b] to-orange-400" },
+  { label: "Next.js", pct: 90, color: "from-[#ff6b6b] to-orange-400" },
+  { label: "Node.js & Express.js", pct: 75, color: "from-[#ff6b6b] to-orange-400" },
+  { label: "MongoDB", pct: 80, color: "from-[#ff6b6b] to-orange-400" },
 ];
 
 const TIMELINE = [
   { year: "2024", title: "Started Learning", desc: "Began my journey with HTML, CSS and JavaScript. Built my first static website." },
-  { year: "2024", title: "Frontend Development", desc: "Mastered responsive design and started building projects with React.js." },
+  { year: "2024", title: "Frontend Development", desc: "Mastered responsive design and started building projects with Next.js." },
   { year: "2025", title: "Backend Development", desc: "Learned Node.js, Express.js and MongoDB to create full-stack applications." },
-  { year: "2025", title: "Today", desc: "Building modern web applications and continuously improving my skills." },
+  { year: "2026", title: "Today", desc: "Building modern web applications and continuously improving my skills." },
 ];
 
 // ─── Animated Counter ─────────────────────────────────────────────────────────
