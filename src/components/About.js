@@ -295,7 +295,7 @@ export default function About() {
               <div className="absolute -top-4 -left-3 text-6xl text-coral-accent/10 font-serif leading-none select-none">"</div>
               <p className="text-white/70 leading-relaxed text-[0.95rem] relative z-10">
                 I'm <span className="text-white font-semibold">Sheikh Siam</span>, a passionate 
-                <span className="text-white font-semibold"> Full Stack Web Developer</span> from Bangladesh.
+                <span className="text-white font-semibold"> Frontend Developer</span> from Bangladesh.
               </p>
               <p className="text-white/55 leading-relaxed text-[0.95rem]">
                 I specialize in building modern, responsive, and user-friendly web applications 

@@ -62,7 +62,7 @@ export default function Hero() {
             <p className="text-2xl font-light">I'm Sheikh Siam</p>
           </div>
           <div className="reveal-text">
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-10 leading-tight">Full-stack <br />Developer</h1>
+            <h1 className="text-5xl md:text-7xl font-extrabold mb-10 leading-tight"> Frontend <br />Developer</h1>
           </div>
           <div className="reveal-text flex flex-wrap gap-4">
             <motion.a
