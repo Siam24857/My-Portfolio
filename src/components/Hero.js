@@ -45,7 +45,7 @@ export default function Hero() {
           initial={{ scale: 1.2, opacity: 0 }}
           animate={{ scale: 1, opacity: 0.15 }}
           transition={{ duration: 2, ease: "easeOut" }}
-          src="https://imagetourl.cloud/15ir56nu.png"
+          src={porfolioimg}
           alt="Banner Background"
           className="w-full h-full object-cover grayscale blur-sm"
         />
@@ -109,7 +109,7 @@ export default function Hero() {
               <img
                 alt="Sheikh Siam"
                 className="w-full h-full object-cover object-top"
-                src="https://www.image2url.com/r2/default/images/1778264415757-4d33eeed-bf69-4b3d-b55c-a6ce978878ec.jpeg"
+                src={porfolioimg}
               />
             </div>
             {/* Geometric Shapes */}
