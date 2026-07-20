@@ -43,11 +43,11 @@ export default function CustomCursor() {
         translateX: cursorX,
         translateY: cursorY,
       }}
-      className={`fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-coral-accent pointer-events-none z-[9999] hidden md:block ${
-        isHovering ? "bg-coral-accent/20 scale-150" : "bg-transparent"
+      className={`fixed top-0 left-0 w-8 h-8 rounded-full border border-accent-cyan pointer-events-none z-[9999] hidden md:block mix-blend-difference ${
+        isHovering ? "bg-accent-cyan/20 scale-150" : "bg-transparent"
       } transition-all duration-300 ease-out`}
     >
-      <div className="absolute inset-0 bg-coral-accent blur-md opacity-20 rounded-full animate-pulse"></div>
+      <div className="absolute inset-0 bg-accent-cyan blur-md opacity-20 rounded-full animate-pulse"></div>
     </motion.div>
   );
 }

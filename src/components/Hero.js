@@ -2,31 +2,36 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import porfolioimg from "../asset/Profilio.jpeg"
+import porfolioimg from "../asset/Profilio.jpeg";
+
+const TECH_FLOATERS = [
+  { label: "React", top: "12%", left: "8%", delay: 0 },
+  { label: "Next.js", top: "22%", left: "82%", delay: 0.6 },
+  { label: "TypeScript", top: "70%", left: "6%", delay: 1.1 },
+  { label: "Tailwind", top: "78%", left: "85%", delay: 0.3 },
+  { label: "JavaScript", top: "45%", left: "90%", delay: 0.9 },
+  { label: "Framer", top: "55%", left: "3%", delay: 1.4 },
+];
 
 export default function Hero() {
   const containerRef = useRef(null);
-  const textRef = useRef(null);
-  const shapesRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Staggered text reveal
-      gsap.from(".reveal-text", {
-        y: 100,
+      gsap.from(".hero-reveal", {
+        y: 40,
         opacity: 0,
         duration: 1,
-        stagger: 0.2,
+        stagger: 0.12,
         ease: "power3.out",
-        delay: 0.5,
+        delay: 0.2,
       });
 
-      // Floating background shapes
-      gsap.to(".float-shape", {
-        y: "random(-20, 20)",
-        x: "random(-20, 20)",
-        rotation: "random(-10, 10)",
-        duration: "random(3, 5)",
+      gsap.to(".tech-floater", {
+        y: "random(-18, 18)",
+        x: "random(-12, 12)",
+        rotation: "random(-8, 8)",
+        duration: "random(3.5, 6)",
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
@@ -37,97 +42,160 @@ export default function Hero() {
   }, []);
 
   return (
-    <section ref={containerRef} className="pt-32 pb-20 md:pt-48 md:pb-32 px-6 relative overflow-hidden" id="home">
-      {/* Background Banner */}
-      <div className="absolute top-0 left-0 w-full h-[60vh] md:h-[80vh] overflow-hidden -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-dark-bg/0 via-dark-bg/60 to-dark-bg z-10"></div>
-        <motion.img
-          initial={{ scale: 1.2, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.15 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          src={porfolioimg}
-          alt="Banner Background"
-          className="w-full h-full object-cover grayscale blur-sm"
-        />
-      </div>
+    <section
+      ref={containerRef}
+      className="relative min-h-screen flex items-center pt-28 pb-20 px-6 overflow-hidden"
+      id="home"
+    >
+      <div className="hero-aura -z-10" />
+      <div className="grid-texture absolute inset-0 -z-10 opacity-60" />
+      <div className="absolute inset-0 bg-gradient-to-b from-ink-900/0 via-ink-900/30 to-ink-900 -z-10" />
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center relative z-10">
-        {/* Hero Content */}
-        <div ref={textRef} className="relative z-20">
-          <div className="reveal-text">
-            <h2 className="text-3xl font-light mb-4">Hello <span className="text-coral-accent">.</span></h2>
-          </div>
-          <div className="reveal-text flex items-center mb-6">
-            <div className="section-line mr-4"></div>
-            <p className="text-2xl font-light">I'm Sheikh Siam</p>
-          </div>
-          <div className="reveal-text">
-            <h1 className="text-5xl md:text-7xl font-extrabold mb-10 leading-tight"> Full-stack<br />Developer</h1>
-          </div>
-          <div className="reveal-text flex flex-wrap gap-4">
-            <motion.a
-              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255, 122, 92, 0.4)" }}
-              whileTap={{ scale: 0.95 }}
-              href="#projects"
-              className="bg-coral-accent text-white px-8 py-3 rounded-sm font-semibold transition-all inline-block"
-            >
-              Got a project?
-            </motion.a> 
-            <motion.a
-              whileHover={{ scale: 1.05, borderColor: "#ff7a5c" }}
-              whileTap={{ scale: 0.95 }}
+      {/* Floating tech elements */}
+      {TECH_FLOATERS.map((t) => (
+        <span
+          key={t.label}
+          className="tech-floater hero-reveal hidden lg:flex items-center gap-2 absolute px-3 py-1.5 rounded-full glass text-xs font-medium text-muted"
+          style={{ top: t.top, left: t.left }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
+          {t.label}
+        </span>
+      ))}
+
+      <div className="container-page grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-10">
+        {/* Content */}
+        <div className="order-2 lg:order-1">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="hero-reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-muted mb-6"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-cyan opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-cyan" />
+            </span>
+            Available for frontend opportunities
+          </motion.div>
+
+          <h1 className="hero-reveal text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6">
+            <span className="block text-muted font-light text-2xl sm:text-3xl mb-2">I'm a</span>
+            <span className="text-gradient-brand">Frontend Developer</span>
+          </h1>
+
+          <p className="hero-reveal text-muted text-lg leading-relaxed max-w-xl mb-10">
+            Building modern, responsive, and interactive web experiences with React,
+            Next.js, JavaScript, and modern UI technologies.
+          </p>
+
+          <div className="hero-reveal flex flex-wrap gap-4">
+            <MagneticButton href="#projects" variant="primary">
+              View Projects
+            </MagneticButton>
+            <MagneticButton
               href="https://drive.google.com/file/d/1tVV3xokzdeEHHCWqVw-QBk7WMNqAgrqf/view?usp=sharing"
-              className="border border-white/30 px-8 py-3 rounded-sm font-semibold transition-all inline-block"
+              variant="ghost"
+              external
             >
-              My resume
-            </motion.a>
+              Download Resume
+            </MagneticButton>
+            <MagneticButton href="#contacts" variant="outline">
+              Contact Me
+            </MagneticButton>
           </div>
         </div>
 
-        {/* Hero Image */}
+        {/* Profile image */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.5, clipPath: "circle(0% at 50% 50%)" }}
-          animate={{ opacity: 1, scale: 1, clipPath: "circle(100% at 50% 50%)" }}
-          transition={{ duration: 1.2, ease: "easeOut", delay: 0.8 }}
-          className="relative flex justify-center items-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+          className="order-1 lg:order-2 flex justify-center"
         >
-          <div className="relative w-80 h-80 md:w-[450px] md:h-[450px]">
-            <div className="hero-glow"></div>
-            {/* Decorative border circle */}
+          <div className="relative w-72 h-72 sm:w-96 sm:h-96 lg:w-[460px] lg:h-[460px]">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-accent via-accent-cyan to-accent-purple blur-3xl opacity-30" />
             <motion.div
-              animate={{ scale: [1.1, 1.15, 1.1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 border-2 border-coral-accent/30 rounded-full"
-            ></motion.div>
-            <motion.div
-              animate={{ scale: [1.25, 1.2, 1.25] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 border-2 border-coral-accent/20 rounded-full"
-            ></motion.div>
-            {/* Main User Photo */}
-            <div className="relative z-10 w-full h-full rounded-full overflow-hidden border-4 border-dark-card shadow-2xl">
+              animate={{ scale: [1.08, 1.13, 1.08] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 rounded-full border border-accent-cyan/20"
+            />
+            <div className="relative z-10 w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-accent-purple/10 z-10 mix-blend-overlay" />
               <img
+                src={porfolioimg.src}
                 alt="Sheikh Siam"
                 className="w-full h-full object-cover object-top"
-                src={porfolioimg}
               />
             </div>
-            {/* Geometric Shapes */}
-            <div className="float-shape absolute -top-10 -left-10 opacity-40">
-              <svg className="text-coral-accent fill-current" height="60" viewBox="0 0 60 60" width="60">
-                <path d="M10,0 L0,10 L20,30 L0,50 L10,60 L40,30 Z" opacity="0.3"></path>
-                <path d="M30,0 L20,10 L40,30 L20,50 L30,60 L60,30 Z"></path>
-              </svg>
-            </div>
-            <div className="float-shape absolute -bottom-10 -right-10 opacity-40 rotate-180">
-              <svg className="text-coral-accent fill-current" height="60" viewBox="0 0 60 60" width="60">
-                <path d="M10,0 L0,10 L20,30 L0,50 L10,60 L40,30 Z" opacity="0.3"></path>
-                <path d="M30,0 L20,10 L40,30 L20,50 L30,60 L60,30 Z"></path>
-              </svg>
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 z-20 px-5 py-2 rounded-full glass-strong text-sm font-semibold text-white">
+              Sheikh Siam
             </div>
           </div>
         </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-dim"
+      >
+        <span className="text-[0.65rem] tracking-[0.25em] uppercase">Scroll</span>
+        <span className="w-px h-10 bg-gradient-to-b from-accent-cyan to-transparent" />
+      </motion.div>
     </section>
+  );
+}
+
+function MagneticButton({ href, children, variant = "primary", external }) {
+  const ref = useRef(null);
+
+  const handleMove = (e) => {
+    const el = ref.current;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+  };
+
+  const reset = () => {
+    if (ref.current) ref.current.style.transform = "translate(0px, 0px)";
+  };
+
+  const base =
+    "inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-colors duration-300 will-change-transform";
+  const variants = {
+    primary:
+      "bg-white text-ink-900 hover:bg-accent-cyan shadow-[0_8px_30px_-8px_rgba(0,194,255,0.5)]",
+    outline:
+      "border border-white/15 text-white hover:border-accent-cyan/60 hover:bg-accent-cyan/5",
+    ghost:
+      "bg-white/5 text-white border border-white/10 hover:bg-white/10",
+  };
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+      onMouseMove={handleMove}
+      onMouseLeave={reset}
+      whileTap={{ scale: 0.96 }}
+      className={`${base} ${variants[variant]}`}
+    >
+      {children}
+      {variant === "primary" && (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M5 12h14m-6-6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+        </svg>
+      )}
+      {external && (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+        </svg>
+      )}
+    </motion.a>
   );
 }
