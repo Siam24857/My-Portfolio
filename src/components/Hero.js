@@ -8,17 +8,17 @@ import porfolioimg from "../asset/Profilio.jpeg";
 const TECH_FLOATERS = [
   { label: "React", top: "12%", left: "8%", delay: 0 },
   { label: "Next.js", top: "22%", left: "82%", delay: 0.6 },
-  { label: "TypeScript", top: "70%", left: "6%", delay: 1.1 },
-  { label: "Tailwind", top: "78%", left: "85%", delay: 0.3 },
-  { label: "JavaScript", top: "45%", left: "90%", delay: 0.9 },
-  { label: "Framer", top: "55%", left: "3%", delay: 1.4 },
+  { label: "Node.js", top: "70%", left: "6%", delay: 1.1 },
+  { label: "Express.js", top: "78%", left: "85%", delay: 0.3 },
+  { label: "MongoDB", top: "45%", left: "90%", delay: 0.9 },
+  { label: "JavaScript", top: "55%", left: "3%", delay: 1.4 },
 ];
 
 const TYPING_WORDS = [
+  "Full-Stack Developer",
   "Frontend Developer",
-  "UI Engineer",
-  "React Specialist",
-  "Creative Coder",
+  "Backend Developer",
+  "MERN Stack Developer",
 ];
 
 export default function Hero() {
@@ -139,7 +139,7 @@ export default function Hero() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF6B6B] opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF6B6B]" />
             </span>
-            Available for frontend opportunities
+            Available for full-stack opportunities
           </motion.div>
 
           <h1 className="hero-reveal text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6">
@@ -148,8 +148,8 @@ export default function Hero() {
           </h1>
 
           <p className="hero-reveal text-muted text-lg leading-relaxed max-w-xl mb-10">
-            Building modern, responsive, and interactive web experiences with React,
-            Next.js, JavaScript, and modern UI technologies.
+            Building modern, responsive, and scalable web applications with React,
+            Next.js, Node.js, Express.js, and MongoDB from frontend to backend.
           </p>
 
           <div className="hero-reveal flex flex-wrap gap-4">

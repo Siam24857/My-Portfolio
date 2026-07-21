@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { SiHtml5, SiCss, SiJavascript, SiReact, SiTypescript, SiGithub, SiGit, SiFigma, SiVercel } from "react-icons/si";
+import { SiHtml5, SiCss, SiJavascript, SiReact, SiTypescript, SiGithub, SiGit, SiFigma, SiVercel, SiNodedotjs, SiExpress, SiMongodb } from "react-icons/si";
 import { VscVscode } from "react-icons/vsc";
 
 function NextIcon() {
@@ -56,10 +56,20 @@ function DesignSystemIcon() {
   );
 }
 
+function DotenvIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M12 2L2 7l10 5 10-5-10-5z" />
+      <path d="M2 17l10 5 10-5" />
+      <path d="M2 12l10 5 10-5" />
+    </svg>
+  );
+}
+
 const TECH_CAROUSEL = [
   "HTML5", "CSS3", "JavaScript", "React", "Next.js",
-  "TypeScript", "Tailwind", "Node.js", "Git", "GitHub",
-  "Figma", "Vercel", "VS Code",
+  "TypeScript", "Tailwind", "Node.js", "Express.js", "MongoDB",
+  "dotenv", "Git", "GitHub", "Figma", "Vercel", "VS Code",
 ];
 
 const CATEGORIES = [
@@ -95,6 +105,16 @@ const CATEGORIES = [
       { name: "Figma", Icon: SiFigma },
       { name: "VS Code", Icon: VscVscode },
       { name: "Vercel", Icon: SiVercel },
+    ],
+  },
+  {
+    title: "Backend",
+    accent: "from-[#FF6B6B] to-[#3B0764]",
+    skills: [
+      { name: "Node.js", Icon: SiNodedotjs },
+      { name: "Express.js", Icon: SiExpress },
+      { name: "MongoDB", Icon: SiMongodb },
+      { name: "dotenv", Icon: DotenvIcon },
     ],
   },
 ];
@@ -161,10 +181,10 @@ export default function Skills() {
           className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-14 max-w-2xl"
         >
           Tools I use to craft{" "}
-          <span className="text-gradient-brand">modern interfaces</span>
+          <span className="text-gradient-brand">full-stack applications</span>
         </motion.h2>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {CATEGORIES.map((cat) => (
             <div
               key={cat.title}
