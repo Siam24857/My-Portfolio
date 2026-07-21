@@ -56,10 +56,16 @@ function DesignSystemIcon() {
   );
 }
 
+const TECH_CAROUSEL = [
+  "HTML5", "CSS3", "JavaScript", "React", "Next.js",
+  "TypeScript", "Tailwind", "Node.js", "Git", "GitHub",
+  "Figma", "Vercel", "VS Code",
+];
+
 const CATEGORIES = [
   {
     title: "Frontend",
-    accent: "from-accent to-accent-cyan",
+    accent: "from-[#FF6B6B] to-[#F3E8FF]",
     skills: [
       { name: "HTML", Icon: SiHtml5 },
       { name: "CSS", Icon: SiCss },
@@ -72,7 +78,7 @@ const CATEGORIES = [
   },
   {
     title: "UI / UX",
-    accent: "from-accent-cyan to-accent-purple",
+    accent: "from-[#F3E8FF] to-[#3B0764]",
     skills: [
       { name: "Responsive Design", Icon: ResponsiveIcon },
       { name: "Component Architecture", Icon: ComponentIcon },
@@ -82,7 +88,7 @@ const CATEGORIES = [
   },
   {
     title: "Tools",
-    accent: "from-accent-purple to-accent",
+    accent: "from-[#3B0764] to-[#FF6B6B]",
     skills: [
       { name: "Git", Icon: SiGit },
       { name: "GitHub", Icon: SiGithub },
@@ -101,15 +107,15 @@ function SkillCard({ name, Icon, index }) {
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.5, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ y: -6 }}
-      className="group relative flex items-center gap-3 p-4 rounded-2xl border border-white/8 bg-white/[0.03] hover:border-accent-cyan/40 hover:bg-white/[0.06] transition-colors duration-300 cursor-default"
+      className="group relative flex items-center gap-3 p-4 rounded-2xl border border-white/8 bg-white/[0.03] hover:border-[#FF6B6B]/40 hover:bg-white/[0.06] transition-colors duration-300 cursor-default"
     >
-      <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 text-accent-cyan group-hover:scale-110 group-hover:bg-accent-cyan/10 transition-all duration-300">
+      <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 text-[#FF6B6B] group-hover:scale-110 group-hover:bg-[#FF6B6B]/10 transition-all duration-300">
         <Icon className="text-xl" />
       </span>
       <span className="text-sm font-medium text-white/85 group-hover:text-white transition-colors">
         {name}
       </span>
-      <span className="absolute inset-x-4 -bottom-px h-px bg-gradient-to-r from-transparent via-accent-cyan to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <span className="absolute inset-x-4 -bottom-px h-px bg-gradient-to-r from-transparent via-[#FF6B6B] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     </motion.div>
   );
 }
@@ -117,6 +123,26 @@ function SkillCard({ name, Icon, index }) {
 export default function Skills() {
   return (
     <section className="relative py-32 px-6 bg-ink-800" id="skills">
+      {/* Infinite Tech Carousel */}
+      <div className="py-6 bg-ink-900/50 border-y border-white/5 overflow-hidden mb-20">
+        <div className="relative flex overflow-hidden">
+          <div className="tech-track">
+            {TECH_CAROUSEL.map((tech) => (
+              <span key={tech} className="text-sm font-bold tracking-widest text-[#F3E8FF]/60 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B6B]" />
+                {tech}
+              </span>
+            ))}
+            {TECH_CAROUSEL.map((tech) => (
+              <span key={`dup-${tech}`} className="text-sm font-bold tracking-widest text-[#F3E8FF]/60 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B6B]" />
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="container-page">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

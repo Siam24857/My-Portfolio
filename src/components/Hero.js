@@ -1,7 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "gsap";
+import Image from "next/image";
 import porfolioimg from "../asset/Profilio.jpeg";
 
 const TECH_FLOATERS = [
@@ -13,8 +14,53 @@ const TECH_FLOATERS = [
   { label: "Framer", top: "55%", left: "3%", delay: 1.4 },
 ];
 
+const TYPING_WORDS = [
+  "Frontend Developer",
+  "UI Engineer",
+  "React Specialist",
+  "Creative Coder",
+];
+
 export default function Hero() {
   const containerRef = useRef(null);
+  const imageRef = useRef(null);
+  const typingRef = useRef(null);
+  const [displayText, setDisplayText] = useState("");
+
+  useEffect(() => {
+    let typingIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let timer;
+
+    const type = () => {
+      const current = TYPING_WORDS[typingIndex];
+      if (!isDeleting) {
+        setDisplayText(current.slice(0, charIndex + 1));
+        charIndex++;
+        if (charIndex === current.length) {
+          timer = setTimeout(() => { isDeleting = true; type(); }, 2000);
+          return;
+        }
+        timer = setTimeout(type, 100);
+      } else {
+        setDisplayText(current.slice(0, charIndex - 1));
+        charIndex--;
+        if (charIndex === 0) {
+          isDeleting = false;
+          typingIndex = (typingIndex + 1) % TYPING_WORDS.length;
+          timer = setTimeout(type, 500);
+          return;
+        }
+        timer = setTimeout(type, 60);
+      }
+    };
+
+    typingRef.current = type;
+    timer = setTimeout(type, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -41,6 +87,23 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
 
+  const handleTilt = useCallback((e) => {
+    if (!imageRef.current) return;
+    const rect = imageRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * 12;
+    const rotateY = ((centerX - x) / centerX) * 12;
+    imageRef.current.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02,1.02,1.02)`;
+  }, []);
+
+  const resetTilt = useCallback(() => {
+    if (!imageRef.current) return;
+    imageRef.current.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)";
+  }, []);
+
   return (
     <section
       ref={containerRef}
@@ -58,7 +121,7 @@ export default function Hero() {
           className="tech-floater hero-reveal hidden lg:flex items-center gap-2 absolute px-3 py-1.5 rounded-full glass text-xs font-medium text-muted"
           style={{ top: t.top, left: t.left }}
         >
-          <span className="w-1.5 h-1.5 rounded-full bg-accent-cyan" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B6B]" />
           {t.label}
         </span>
       ))}
@@ -73,15 +136,15 @@ export default function Hero() {
             className="hero-reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-muted mb-6"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-cyan opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-cyan" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF6B6B] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF6B6B]" />
             </span>
             Available for frontend opportunities
           </motion.div>
 
           <h1 className="hero-reveal text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6">
-            <span className="block text-muted font-light text-2xl sm:text-3xl mb-2">I'm a</span>
-            <span className="text-gradient-brand">Frontend Developer</span>
+            <span className="block text-muted font-light text-2xl sm:text-3xl mb-2">I&apos;m a</span>
+            <span className="text-gradient-brand">{displayText}<span className="animate-pulse text-[#FF6B6B]">|</span></span>
           </h1>
 
           <p className="hero-reveal text-muted text-lg leading-relaxed max-w-xl mb-10">
@@ -94,7 +157,7 @@ export default function Hero() {
               View Projects
             </MagneticButton>
             <MagneticButton
-              href="https://drive.google.com/file/d/1tVV3xokzdeEHHCWqVw-QBk7WMNqAgrqf/view?usp=sharing"
+              href="https://drive.google.com/file/d/1_jF1S2jq8ExXsPVmfr4UX_W6zDUCFnZx/view?usp=sharing"
               variant="ghost"
               external
             >
@@ -106,7 +169,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Profile image */}
+        {/* Profile image with 3D tilt */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -114,22 +177,28 @@ export default function Hero() {
           className="order-1 lg:order-2 flex justify-center"
         >
           <div className="relative w-72 h-72 sm:w-96 sm:h-96 lg:w-[460px] lg:h-[460px]">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-accent via-accent-cyan to-accent-purple blur-3xl opacity-30" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#FF6B6B] via-[#F3E8FF] to-[#3B0764] blur-3xl opacity-30" />
             <motion.div
               animate={{ scale: [1.08, 1.13, 1.08] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute inset-0 rounded-full border border-accent-cyan/20"
+              className="absolute inset-0 rounded-full border border-[#F3E8FF]/20"
             />
-            <div className="relative z-10 w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-accent-purple/10 z-10 mix-blend-overlay" />
-              <img
-                src={porfolioimg.src}
+            <div
+              ref={imageRef}
+              onMouseMove={handleTilt}
+              onMouseLeave={resetTilt}
+              className="relative z-10 w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl transition-transform duration-200 ease-out"
+            >
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#FF6B6B]/10 to-[#3B0764]/10 z-10 mix-blend-overlay" />
+              <Image
+                src={porfolioimg}
                 alt="Sheikh Siam"
-                className="w-full h-full object-cover object-top"
+                fill
+                className="object-cover object-top"
               />
             </div>
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 z-20 px-5 py-2 rounded-full glass-strong text-sm font-semibold text-white">
-              Sheikh Siam
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 z-20 px-5 py-2 rounded-full glass-strong text-sm font-semibold text-white whitespace-nowrap">
+              ✦ Sheikh Siam ✦
             </div>
           </div>
         </motion.div>
@@ -142,7 +211,7 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-dim"
       >
         <span className="text-[0.65rem] tracking-[0.25em] uppercase">Scroll</span>
-        <span className="w-px h-10 bg-gradient-to-b from-accent-cyan to-transparent" />
+        <span className="w-px h-10 bg-gradient-to-b from-[#F3E8FF] to-transparent" />
       </motion.div>
     </section>
   );
@@ -167,9 +236,9 @@ function MagneticButton({ href, children, variant = "primary", external }) {
     "inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-colors duration-300 will-change-transform";
   const variants = {
     primary:
-      "bg-white text-ink-900 hover:bg-accent-cyan shadow-[0_8px_30px_-8px_rgba(0,194,255,0.5)]",
+      "bg-white text-ink-900 hover:bg-[#F3E8FF] shadow-[0_8px_30px_-8px_rgba(243,232,255,0.5)]",
     outline:
-      "border border-white/15 text-white hover:border-accent-cyan/60 hover:bg-accent-cyan/5",
+      "border border-white/15 text-white hover:border-[#FF6B6B]/60 hover:bg-[#FF6B6B]/5",
     ghost:
       "bg-white/5 text-white border border-white/10 hover:bg-white/10",
   };

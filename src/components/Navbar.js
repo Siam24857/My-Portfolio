@@ -38,7 +38,7 @@ export default function Navbar() {
       }`}
     >
       <motion.div
-        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent-cyan to-transparent origin-left"
+        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#F3E8FF] to-transparent origin-left"
         style={{ scaleX }}
       />
 
@@ -49,7 +49,7 @@ export default function Navbar() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative w-9 h-9 overflow-hidden rounded-lg bg-ink-700 border border-white/10 group-hover:border-accent-cyan/60 transition-colors">
+            <div className="relative w-9 h-9 overflow-hidden rounded-lg bg-ink-700 border border-white/10 group-hover:border-[#FF6B6B]/60 transition-colors">
               <Image
                 src="/favicon.ico"
                 alt="Sheikh Siam Logo"
@@ -58,7 +58,7 @@ export default function Navbar() {
               />
             </div>
             <span className="text-lg font-semibold tracking-tight">
-              Sheikh<span className="text-accent-cyan"> Siam</span>
+              Sheikh<span className="text-[#F3E8FF]"> Siam</span>
             </span>
           </Link>
         </motion.div>
@@ -72,7 +72,7 @@ export default function Navbar() {
               transition={{ duration: 0.5, delay: 0.08 * index }}
             >
               <Link
-                className="relative hover:text-white transition-colors after:content-[''] after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-accent-cyan after:transition-all after:duration-300 hover:after:w-full"
+                className="relative hover:text-white transition-colors after:content-[''] after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-[#FF6B6B] after:transition-all after:duration-300 hover:after:w-full"
                 href={link.href}
               >
                 {link.name}
@@ -83,7 +83,7 @@ export default function Navbar() {
 
         <div className="hidden md:block">
           <motion.a
-            href="https://drive.google.com/file/d/1tVV3xokzdeEHHCWqVw-QBk7WMNqAgrqf/view?usp=sharing"
+            href="https://drive.google.com/file/d/1_jF1S2jq8ExXsPVmfr4UX_W6zDUCFnZx/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             initial={{ opacity: 0, x: 20 }}
@@ -91,7 +91,7 @@ export default function Navbar() {
             transition={{ duration: 0.8 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-white px-5 py-2.5 rounded-full border border-white/10 bg-white/5 hover:border-accent-cyan/50 hover:bg-accent-cyan/10 transition-all"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white px-5 py-2.5 rounded-full border border-white/10 bg-white/5 hover:border-[#FF6B6B]/50 hover:bg-[#FF6B6B]/10 transition-all"
           >
             Resume
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@ export default function Navbar() {
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
-                  className="text-base font-medium text-muted hover:text-accent-cyan transition-colors"
+                  className="text-base font-medium text-muted hover:text-[#FF6B6B] transition-colors"
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

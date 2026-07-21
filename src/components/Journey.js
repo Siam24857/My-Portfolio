@@ -39,14 +39,14 @@ function TimelineItem({ item, index }) {
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="relative pl-12 pb-12 last:pb-0"
+      className="relative pl-12 pb-12 last:pb-0 group"
     >
-      <span className="absolute left-[14px] top-1.5 w-3 h-3 rounded-full bg-gradient-to-br from-accent to-accent-cyan ring-4 ring-ink-900" />
+      <span className="absolute left-[14px] top-1.5 w-3 h-3 rounded-full bg-gradient-to-br from-[#FF6B6B] to-[#F3E8FF] ring-4 ring-ink-900 group-hover:scale-125 transition-transform duration-300" />
       {index < TIMELINE.length - 1 && (
         <span className="absolute left-[20px] top-5 bottom-0 w-px bg-gradient-to-b from-white/15 to-transparent" />
       )}
       <div className="flex flex-wrap items-center gap-3 mb-2">
-        <span className="text-sm font-mono text-accent-cyan">{item.period}</span>
+        <span className="text-sm font-mono text-[#FF6B6B]">{item.period}</span>
         <span className="text-[0.65rem] uppercase tracking-wider px-2 py-0.5 rounded-full border border-white/10 text-muted bg-white/[0.03]">
           {item.tag}
         </span>

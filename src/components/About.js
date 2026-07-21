@@ -17,6 +17,14 @@ const EXPERTISE = [
   "Performance-first, SEO-ready delivery",
 ];
 
+const SKILL_BARS = [
+  { name: "React & Next.js", level: 92, color: "#FF6B6B" },
+  { name: "JavaScript / TypeScript", level: 88, color: "#F3E8FF" },
+  { name: "HTML / CSS / Tailwind", level: 95, color: "#3B0764" },
+  { name: "UI / UX Design", level: 82, color: "#FF6B6B" },
+  { name: "Git & GitHub", level: 85, color: "#F3E8FF" },
+];
+
 function Counter({ to, suffix }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
@@ -44,6 +52,36 @@ function Counter({ to, suffix }) {
   );
 }
 
+function SkillBarItem({ name, level, color, index }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const [width, setWidth] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const timeout = setTimeout(() => setWidth(level), 300 + index * 100);
+    return () => clearTimeout(timeout);
+  }, [inView, level, index]);
+
+  return (
+    <div ref={ref} className="mb-3">
+      <div className="flex justify-between text-xs text-muted mb-1.5">
+        <span>{name}</span>
+        <span>{level}%</span>
+      </div>
+      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={inView ? { width: `${level}%` } : {}}
+          transition={{ duration: 1.2, delay: index * 0.1, ease: "easeOut" }}
+          className="h-full rounded-full"
+          style={{ background: `linear-gradient(90deg, ${color}, ${color}88)` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function About() {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -68,8 +106,8 @@ export default function About() {
       id="about"
     >
       <motion.div style={{ y: bgY }} className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-accent/10 blur-[140px]" />
-        <div className="absolute bottom-10 right-0 w-[400px] h-[400px] rounded-full bg-accent-purple/10 blur-[120px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#FF6B6B]/10 blur-[140px]" />
+        <div className="absolute bottom-10 right-0 w-[400px] h-[400px] rounded-full bg-[#3B0764]/10 blur-[120px]" />
       </motion.div>
 
       <div className="container-page relative">
@@ -82,7 +120,7 @@ export default function About() {
           About Me
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
           {/* Visual */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -137,7 +175,7 @@ export default function About() {
             <motion.ul variants={item} className="space-y-3 pt-2">
               {EXPERTISE.map((point) => (
                 <li key={point} className="flex items-start gap-3 text-muted">
-                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-accent-cyan shrink-0" />
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#FF6B6B] shrink-0" />
                   {point}
                 </li>
               ))}
@@ -149,7 +187,7 @@ export default function About() {
                   key={st.label}
                   className="rounded-2xl border border-white/8 bg-white/[0.03] px-3 py-5 text-center"
                 >
-                  <div className="text-3xl font-extrabold tracking-tight text-white">
+                  <div className="text-3xl font-extrabold tracking-tight bg-gradient-to-b from-[#F3E8FF] to-[#FF6B6B] bg-clip-text text-transparent">
                     <Counter to={st.value} suffix={st.suffix} />
                   </div>
                   <p className="text-[0.65rem] text-muted uppercase tracking-wider mt-1">
@@ -157,6 +195,33 @@ export default function About() {
                   </p>
                 </div>
               ))}
+            </motion.div>
+
+            {/* Skill Bars */}
+            <motion.div variants={item} className="pt-6">
+              <h4 className="text-sm font-semibold text-[#F3E8FF] mb-4 tracking-wider uppercase">Core Skills</h4>
+              {SKILL_BARS.map((skill, i) => (
+                <SkillBarItem key={skill.name} {...skill} index={i} />
+              ))}
+            </motion.div>
+
+            {/* GitHub-inspired stats */}
+            <motion.div variants={item} className="flex flex-wrap gap-4 pt-2">
+              <div className="flex items-center gap-2 text-sm text-muted bg-white/[0.03] border border-white/5 rounded-full px-4 py-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#FF6B6B]" />
+                120+ repos
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted bg-white/[0.03] border border-white/5 rounded-full px-4 py-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#F3E8FF]" />
+                1.2k stars
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted bg-white/[0.03] border border-white/5 rounded-full px-4 py-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#3B0764]" />
+                340 forks
+              </div>
+              <div className="shimmer-border px-4 py-1.5 rounded-full text-[10px] font-bold text-white/90">
+                #opensource
+              </div>
             </motion.div>
           </motion.div>
         </div>
