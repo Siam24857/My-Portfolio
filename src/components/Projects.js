@@ -93,7 +93,7 @@ const PROJECTS = [
   ],
   description:
     "A full-stack marketplace platform that allows users to explore products, manage listings, and interact through a secure e-commerce workflow. The application includes role-based dashboards for buyers, sellers, and admins, authentication, product management, protected routes, database integration, and a responsive user-friendly interface built with modern technologies.",
-  github: "https://github.com/Siam24857",
+  github: "https://github.com/Siam24857/Marketplace-client.git",
   link: "https://marketplace-client-one.vercel.app",
 },
 ];
