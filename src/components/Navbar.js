@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
 export default function Navbar() {
@@ -33,12 +33,12 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-ink-900/70 backdrop-blur-xl border-b border-white/5"
+          ? "bg-white/80 backdrop-blur-xl border-b border-slate-200/80 shadow-sm"
           : "bg-transparent"
       }`}
     >
       <motion.div
-        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#F3E8FF] to-transparent origin-left"
+        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#0284c7] to-transparent origin-left"
         style={{ scaleX }}
       />
 
@@ -49,21 +49,21 @@ export default function Navbar() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative w-9 h-9 overflow-hidden rounded-lg bg-ink-700 border border-white/10 group-hover:border-[#FF6B6B]/60 transition-colors">
+            <div className="relative w-9 h-9 overflow-hidden rounded-lg bg-white/80 border border-slate-200 group-hover:border-[#0284c7] shadow-sm transition-all duration-300">
               <Image
                 src="/favicon.ico"
                 alt="Sheikh Siam Logo"
                 fill
-                className="object-cover p-1.5"
+                className="object-cover p-1.5 transition-transform duration-500 group-hover:scale-110"
               />
             </div>
-            <span className="text-lg font-semibold tracking-tight">
-              Sheikh<span className="text-[#F3E8FF]"> Siam</span>
+            <span className="text-lg font-bold tracking-tight text-slate-900">
+              Sheikh<span className="text-[#0284c7]"> Siam</span>
             </span>
           </Link>
         </motion.div>
 
-        <div className="hidden md:flex items-center space-x-9 text-sm font-medium text-muted">
+        <div className="hidden md:flex items-center space-x-9 text-sm font-semibold text-slate-700">
           {navLinks.map((link, index) => (
             <motion.div
               key={link.name}
@@ -72,7 +72,7 @@ export default function Navbar() {
               transition={{ duration: 0.5, delay: 0.08 * index }}
             >
               <Link
-                className="relative hover:text-white transition-colors after:content-[''] after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-[#FF6B6B] after:transition-all after:duration-300 hover:after:w-full"
+                className="relative hover:text-[#0284c7] transition-colors after:content-[''] after:absolute after:-bottom-1.5 after:left-0 after:h-[2px] after:w-0 after:bg-[#0284c7] after:transition-all after:duration-300 hover:after:w-full"
                 href={link.href}
               >
                 {link.name}
@@ -91,26 +91,51 @@ export default function Navbar() {
             transition={{ duration: 0.8 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-white px-5 py-2.5 rounded-full border border-white/10 bg-white/5 hover:border-[#FF6B6B]/50 hover:bg-[#FF6B6B]/10 transition-all"
+            className="inline-flex items-center gap-2 text-sm font-bold text-slate-900 px-5 py-2.5 rounded-full border border-[#0284c7]/40 bg-white/80 hover:border-[#0284c7] hover:bg-[#0284c7]/10 shadow-sm transition-all duration-300"
           >
             Resume
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+            <svg
+              className="w-4 h-4 text-[#0284c7]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2.5"
+              />
             </svg>
           </motion.a>
         </div>
 
         <div className="md:hidden">
           <button
-            className="p-2 text-white"
+            className="p-2 text-slate-800"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
               {isMobileMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                <path
+                  d="M6 18L18 6M6 6l12 12"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                />
               ) : (
-                <path d="M4 6h16M4 12h16m-7 6h7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                <path
+                  d="M4 6h16M4 12h16m-7 6h7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                />
               )}
             </svg>
           </button>
@@ -127,15 +152,21 @@ export default function Navbar() {
             className="md:hidden bg-ink-800/95 backdrop-blur-xl border-b border-white/5 overflow-hidden"
           >
             <div className="flex flex-col p-6 space-y-4">
-              {navLinks.map((link) => (
-                <Link
+              {navLinks.map((link, i) => (
+                <motion.div
                   key={link.name}
-                  className="text-base font-medium text-muted hover:text-[#FF6B6B] transition-colors"
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
                 >
-                  {link.name}
-                </Link>
+                  <Link
+                    className="text-base font-medium text-muted hover:text-[#06b6d4] transition-colors block"
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </motion.div>

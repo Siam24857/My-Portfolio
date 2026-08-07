@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import AppProviders from "@/components/AppProviders";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,10 +19,11 @@ export const metadata = {
 
   title: "Sheikh Siam | Frontend Developer & UI Engineer",
   description:
-    "Sheikh Siam is a frontend developer building modern, responsive, and interactive web experiences with React, Next.js, JavaScript, and modern UI technologies. Explore projects, skills, and the development journey.",
+    "Sheikh Siam is a full-stack developer building modern, responsive, and interactive web experiences with React, Next.js, JavaScript, and modern UI technologies. Explore projects, skills, and the development journey.",
 
   keywords: [
     "Frontend Developer",
+    "Full-Stack Developer",
     "React",
     "Next.js",
     "JavaScript",
@@ -32,6 +34,8 @@ export const metadata = {
     "Web Developer",
     "Sheikh Siam",
     "Bangladesh Developer",
+    "Three.js",
+    "WebGL",
   ],
 
   authors: [{ name: "Sheikh Siam" }],
@@ -54,7 +58,7 @@ export const metadata = {
         url: "/opengraph-image.png",
         width: 1200,
         height: 630,
-        alt: "Sheikh Siam — Frontend Developer Portfolio",
+        alt: "Sheikh Siam — Full-Stack Developer Portfolio",
       },
     ],
     type: "website",
@@ -82,22 +86,14 @@ export const metadata = {
     },
   },
 
-  verification: {
-    google: "verification-token",
-  },
-
   category: "technology",
 };
-
-import SmoothScroll from "@/components/SmoothScroll";
-import CustomCursor from "@/components/CustomCursor";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`h-full antialiased scroll-smooth ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="min-h-full flex flex-col bg-dark-bg text-white">
-        <CustomCursor />
-        <SmoothScroll>{children}</SmoothScroll>
+      <body className="min-h-full flex flex-col bg-transparent text-slate-900 overflow-x-hidden">
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

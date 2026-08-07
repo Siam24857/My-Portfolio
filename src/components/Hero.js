@@ -1,33 +1,28 @@
 "use client";
-import { motion } from "framer-motion";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import Image from "next/image";
-import porfolioimg from "../asset/Profilio.jpeg";
-
-const TECH_FLOATERS = [
-  { label: "React", top: "12%", left: "8%", delay: 0 },
-  { label: "Next.js", top: "22%", left: "82%", delay: 0.6 },
-  { label: "Node.js", top: "70%", left: "6%", delay: 1.1 },
-  { label: "Express.js", top: "78%", left: "85%", delay: 0.3 },
-  { label: "MongoDB", top: "45%", left: "90%", delay: 0.9 },
-  { label: "JavaScript", top: "55%", left: "3%", delay: 1.4 },
-];
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { preloadFrames } from "@/components/FramePlayer";
+import { PROFILE, SKILLS } from "@/lib/data";
 
 const TYPING_WORDS = [
-  "Full-Stack Developer",
   "Frontend Developer",
-  "Backend Developer",
-  "MERN Stack Developer",
+  "UI Engineer",
+  "Creative Web Developer",
+  "Motion & 3D Specialist",
 ];
+
+const TOP_SKILLS = SKILLS.slice(0, 6);
 
 export default function Hero() {
   const containerRef = useRef(null);
-  const imageRef = useRef(null);
-  const typingRef = useRef(null);
+  const scrollRef = useRef(null);
   const [displayText, setDisplayText] = useState("");
+  const typingRef = useRef(null);
 
   useEffect(() => {
+
     let typingIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -39,10 +34,13 @@ export default function Hero() {
         setDisplayText(current.slice(0, charIndex + 1));
         charIndex++;
         if (charIndex === current.length) {
-          timer = setTimeout(() => { isDeleting = true; type(); }, 2000);
+          timer = setTimeout(() => {
+            isDeleting = true;
+            type();
+          }, 2200);
           return;
         }
-        timer = setTimeout(type, 100);
+        timer = setTimeout(type, 90);
       } else {
         setDisplayText(current.slice(0, charIndex - 1));
         charIndex--;
@@ -52,218 +50,312 @@ export default function Hero() {
           timer = setTimeout(type, 500);
           return;
         }
-        timer = setTimeout(type, 60);
+        timer = setTimeout(type, 50);
       }
     };
 
-    typingRef.current = type;
-    timer = setTimeout(type, 1000);
+    timer = setTimeout(type, 1100);
+    typingRef.current = timer;
 
     return () => clearTimeout(timer);
   }, []);
+
+  const { scrollYProgress } = useScroll({ target: scrollRef });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 140]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".hero-reveal", {
         y: 40,
         opacity: 0,
-        duration: 1,
+        duration: 1.1,
         stagger: 0.12,
         ease: "power3.out",
-        delay: 0.2,
+        delay: 0.3,
       });
 
       gsap.to(".tech-floater", {
-        y: "random(-18, 18)",
-        x: "random(-12, 12)",
-        rotation: "random(-8, 8)",
-        duration: "random(3.5, 6)",
+        y: "random(-22, 22)",
+        x: "random(-14, 14)",
+        rotation: "random(-10, 10)",
+        duration: "random(4, 7)",
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
       });
+
+      if (typeof ScrollTrigger !== "undefined") {
+        ScrollTrigger.register(gsap);
+        gsap.to(".hero-fade", {
+          opacity: 0,
+          y: 60,
+          ease: "none",
+          scrollTrigger: {
+            trigger: scrollRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
-  const handleTilt = useCallback((e) => {
-    if (!imageRef.current) return;
-    const rect = imageRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * 12;
-    const rotateY = ((centerX - x) / centerX) * 12;
-    imageRef.current.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02,1.02,1.02)`;
-  }, []);
-
-  const resetTilt = useCallback(() => {
-    if (!imageRef.current) return;
-    imageRef.current.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)";
-  }, []);
-
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-screen flex items-center pt-28 pb-20 px-6 overflow-hidden"
-      id="home"
-    >
-      <div className="hero-aura -z-10" />
-      <div className="grid-texture absolute inset-0 -z-10 opacity-60" />
-      <div className="absolute inset-0 bg-gradient-to-b from-ink-900/0 via-ink-900/30 to-ink-900 -z-10" />
+    <section ref={containerRef} className="relative w-full min-h-screen overflow-hidden bg-transparent" id="home">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-transparent z-[1]" />
+      <div className="absolute inset-0 z-[1] pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-gradient-to-tr from-[#06b6d4]/15 via-[#7c3aed]/10 to-transparent blur-[100px] animate-pulse-slow" />
+      </div>
+      <div className="hero-aura -z-0 opacity-40" />
 
-      {/* Floating tech elements */}
-      {TECH_FLOATERS.map((t) => (
-        <span
-          key={t.label}
-          className="tech-floater hero-reveal hidden lg:flex items-center gap-2 absolute px-3 py-1.5 rounded-full glass text-xs font-medium text-muted"
-          style={{ top: t.top, left: t.left }}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#FF6B6B]" />
-          {t.label}
-        </span>
-      ))}
-
-      <div className="container-page grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-10">
-        {/* Content */}
-        <div className="order-2 lg:order-1">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="hero-reveal inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-muted mb-6"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF6B6B] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF6B6B]" />
-            </span>
-            Available for full-stack opportunities
-          </motion.div>
-
-          <h1 className="hero-reveal text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6">
-            <span className="block text-muted font-light text-2xl sm:text-3xl mb-2">I&apos;m a</span>
-            <span className="text-gradient-brand">{displayText}<span className="animate-pulse text-[#FF6B6B]">|</span></span>
-          </h1>
-
-          <p className="hero-reveal text-muted text-lg leading-relaxed max-w-xl mb-10">
-            Building modern, responsive, and scalable web applications with React,
-            Next.js, Node.js, Express.js, and MongoDB from frontend to backend.
-          </p>
-
-          <div className="hero-reveal flex flex-wrap gap-4">
-            <MagneticButton href="#projects" variant="primary">
-              View Projects
-            </MagneticButton>
-            <MagneticButton
-              href="https://drive.google.com/file/d/1_jF1S2jq8ExXsPVmfr4UX_W6zDUCFnZx/view?usp=sharing"
-              variant="ghost"
-              external
+      <motion.div
+        ref={scrollRef}
+        style={{ y: parallaxY }}
+        className="relative pt-32 sm:pt-40 pb-20 flex items-center z-[2]"
+      >
+        <div className="container-page mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="hero-reveal hero-fade"
             >
-              Download Resume
-            </MagneticButton>
-            <MagneticButton href="#contacts" variant="outline">
-              Contact Me
-            </MagneticButton>
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#0284c7]/40 bg-[#0284c7]/10 text-xs font-bold text-[#0284c7] mb-6 hero-reveal shadow-sm"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0284c7] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0284c7]" />
+                </span>
+                Available for Frontend & Creative Engineering Roles
+              </motion.span>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6 text-slate-900"
+              >
+                <span className="block text-slate-600 font-normal text-2xl sm:text-3xl mb-3">
+                  Hi, I&apos;m
+                </span>
+                <motion.span
+                  className="text-gradient-brand block"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {PROFILE.name}
+                </motion.span>
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gradient-brand mb-2"
+              >
+                <span className="inline-block min-w-[280px]">
+                  {displayText || TYPING_WORDS[0]}
+                  <span className="border-l-2 border-[#0284c7] ml-1 animate-caret-blink" />
+                </span>
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                className="text-slate-700 text-lg font-medium leading-relaxed max-w-xl mb-10 hero-reveal"
+              >
+                {PROFILE.tagline}
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="flex flex-wrap gap-3 items-center mb-10 hero-reveal"
+              >
+                {TOP_SKILLS.map((skill, i) => (
+                  <motion.span
+                    key={skill.name}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.8 + i * 0.06 }}
+                    className="tech-floater text-xs font-bold px-3 py-1.5 rounded-full glass text-slate-800 border border-slate-200 shadow-sm"
+                    style={{
+                      boxShadow: `0 4px 14px ${skill.color}25`,
+                    }}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full inline-block mr-2"
+                      style={{ background: skill.color }}
+                    />
+                    {skill.name}
+                  </motion.span>
+                ))}
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                className="hero-reveal mt-10 flex flex-wrap gap-4"
+              >
+                <MagneticButton href="#projects">View Projects</MagneticButton>
+                <MagneticButton href="#contacts" variant="outline">
+                  Contact Me
+                </MagneticButton>
+              </motion.div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+              className="hero-reveal hero-fade hidden lg:flex justify-center"
+            >
+              <motion.div
+                className="relative w-80 h-80 lg:w-[420px] lg:h-[420px]"
+                animate={{
+                  rotate: [0, 360],
+                }}
+                transition={{
+                  duration: 40,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              >
+                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#0284c7] via-[#7c3aed] to-[#f43f5e] opacity-25 blur-3xl animate-pulse-slow" />
+                <motion.div
+                  animate={{ scale: [1.05, 1.1, 1.05], opacity: [0.4, 0.6, 0.4] }}
+                  transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute inset-0 rounded-full border border-[#0284c7]/30"
+                />
+                <motion.div
+                  className="relative z-10 w-full h-full rounded-full overflow-hidden border border-white/80 shadow-2xl bg-white/70 backdrop-blur-xl"
+                >
+                  <div className="absolute inset-0 flex items-center justify-center text-6xl font-black text-gradient-brand">
+                    SS
+                  </div>
+                </motion.div>
+                <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 z-20 px-6 py-2.5 rounded-full glass-strong text-sm font-bold text-slate-900 border border-slate-200/80 shadow-lg">
+                  ✦ Sheikh Siam ✦
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-
-        {/* Profile image with 3D tilt */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-          className="order-1 lg:order-2 flex justify-center"
-        >
-          <div className="relative w-72 h-72 sm:w-96 sm:h-96 lg:w-[460px] lg:h-[460px]">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#FF6B6B] via-[#F3E8FF] to-[#3B0764] blur-3xl opacity-30" />
-            <motion.div
-              animate={{ scale: [1.08, 1.13, 1.08] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute inset-0 rounded-full border border-[#F3E8FF]/20"
-            />
-            <div
-              ref={imageRef}
-              onMouseMove={handleTilt}
-              onMouseLeave={resetTilt}
-              className="relative z-10 w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl transition-transform duration-200 ease-out"
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#FF6B6B]/10 to-[#3B0764]/10 z-10 mix-blend-overlay" />
-              <Image
-                src={porfolioimg}
-                alt="Sheikh Siam"
-                fill
-                className="object-cover object-top"
-              />
-            </div>
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 z-20 px-5 py-2 rounded-full glass-strong text-sm font-semibold text-white whitespace-nowrap">
-              ✦ Sheikh Siam ✦
-            </div>
-          </div>
-        </motion.div>
-      </div>
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-dim"
+        transition={{ delay: 1.8, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-muted-dim z-[2]"
       >
-        <span className="text-[0.65rem] tracking-[0.25em] uppercase">Scroll</span>
-        <span className="w-px h-10 bg-gradient-to-b from-[#F3E8FF] to-transparent" />
+        <motion.span
+          className="text-[0.65rem] tracking-[0.25em] uppercase"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2, duration: 0.6 }}
+        >
+          Scroll to Explore
+        </motion.span>
+        <motion.span
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-px h-12 bg-gradient-to-b from-[#06b6d4] to-transparent"
+        />
       </motion.div>
     </section>
   );
 }
 
-function MagneticButton({ href, children, variant = "primary", external }) {
+function MagneticButton({ href, children, variant = "primary" }) {
   const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
 
   const handleMove = (e) => {
     const el = ref.current;
+    if (!el) return;
     const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    el.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+    setPosition({ x, y });
   };
 
-  const reset = () => {
-    if (ref.current) ref.current.style.transform = "translate(0px, 0px)";
+  const handleEnter = () => setHovered(true);
+  const handleLeave = () => {
+    setHovered(false);
+    setPosition({ x: 0, y: 0 });
   };
 
   const base =
-    "inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-colors duration-300 will-change-transform";
+    "relative inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-300 will-change-transform overflow-hidden";
   const variants = {
     primary:
-      "bg-white text-ink-900 hover:bg-[#F3E8FF] shadow-[0_8px_30px_-8px_rgba(243,232,255,0.5)]",
+      "bg-gradient-to-r from-[#06b6d4] to-[#7c3aed] text-white shadow-[0_8px_30px_-8px_rgba(6,182,212,0.5)] hover:shadow-[0_8px_30px_-8px_rgba(6,182,212,0.7)]",
     outline:
-      "border border-white/15 text-white hover:border-[#FF6B6B]/60 hover:bg-[#FF6B6B]/5",
-    ghost:
-      "bg-white/5 text-white border border-white/10 hover:bg-white/10",
+      "border border-[#06b6d4]/40 text-white hover:border-[#06b6d4] hover:bg-[#06b6d4]/5",
   };
 
   return (
     <motion.a
       ref={ref}
       href={href}
-      target={external ? "_blank" : undefined}
-      rel={external ? "noopener noreferrer" : undefined}
       onMouseMove={handleMove}
-      onMouseLeave={reset}
+      onMouseLeave={handleLeave}
+      onMouseEnter={handleEnter}
       whileTap={{ scale: 0.96 }}
       className={`${base} ${variants[variant]}`}
     >
-      {children}
+      <span
+        className={`absolute rounded-full bg-[#06b6d4] transition-opacity duration-500 ${
+          hovered ? "opacity-30" : "opacity-0"
+        }`}
+        style={{
+          width: 48,
+          height: 48,
+          left: position.x - 24,
+          top: position.y - 24,
+          transform: `scale(${hovered ? 1.2 : 0.8})`,
+        }}
+      />
+      <motion.span
+        className="relative z-10 flex items-center gap-2"
+        style={{
+          transform:
+            variant === "primary"
+              ? `translate(${position.x * 0.2}px, ${position.y * 0.3}px)`
+              : "none",
+        }}
+      >
+        {children}
+      </motion.span>
       {variant === "primary" && (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M5 12h14m-6-6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-        </svg>
-      )}
-      {external && (
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
-        </svg>
+        <motion.svg
+          className="relative z-10 w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          animate={{ x: position.x * 0.05 }}
+        >
+          <path
+            d="M5 12h14m-6-6l6 6-6 6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </motion.svg>
       )}
     </motion.a>
   );

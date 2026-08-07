@@ -21,20 +21,18 @@ export default function SmoothScroll({ children }) {
 
     lenis.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((time) => {
+    const ticker = (time) => {
       lenis.raf(time * 1000);
-    });
+    };
 
+    gsap.ticker.add(ticker);
     gsap.ticker.lagSmoothing(0);
 
-    // Scroll to top on refresh
     window.scrollTo(0, 0);
 
     return () => {
       lenis.destroy();
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000);
-      });
+      gsap.ticker.remove(ticker);
     };
   }, []);
 

@@ -27,7 +27,6 @@ const SOCIALS = [
       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
     ),
   },
-   
 ];
 
 export default function Contact() {
@@ -49,7 +48,15 @@ export default function Contact() {
   };
 
   return (
-    <section className="relative py-32 px-6 bg-ink-900" id="contacts">
+    <section
+      className="relative py-32 px-6 bg-transparent"
+      id="contacts"
+    >
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-[#06b6d4]/4 blur-[140px]" />
+        <div className="absolute bottom-20 right-0 w-[360px] h-[360px] rounded-full bg-[#7c3aed]/4 blur-[120px]" />
+      </div>
+
       <div className="container-page">
         <div className="grid lg:grid-cols-2 gap-14 lg:gap-20">
           <div>
@@ -71,43 +78,67 @@ export default function Contact() {
               Let&apos;s build something{" "}
               <span className="text-gradient-brand">exceptional</span>
             </motion.h2>
-            <p className="text-muted leading-relaxed max-w-md mb-12">
-              Have a project, a role, or just want to connect? I&apos;m always open to
-              meaningful frontend work and collaborations.
-            </p>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-muted-light leading-relaxed max-w-md mb-12"
+            >
+              Have a project, a role, or just want to connect? I&apos;m always
+              open to meaningful frontend work and collaborations.
+            </motion.p>
 
-            <div className="space-y-4">
-              {SOCIALS.map((s) => (
-                <a
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-4"
+            >
+              {SOCIALS.map((s, i) => (
+                <motion.a
                   key={s.label}
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-4 p-4 rounded-2xl border border-white/8 bg-white/[0.03] hover:border-[#FF6B6B]/40 hover:bg-white/[0.05] transition-all duration-300"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.1 * i }}
+                  whileHover={{ x: 5, scale: 1.02 }}
+                  className="group flex items-center gap-4 p-4 rounded-2xl border border-white/8 bg-white/[0.03] hover:border-[#06b6d4]/40 hover:bg-white/[0.05] transition-all duration-300"
                 >
-                  <span className="flex items-center justify-center w-11 h-11 rounded-xl bg-white/5 text-[#FF6B6B] group-hover:scale-110 group-hover:bg-[#FF6B6B]/10 transition-all duration-300">
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <motion.span
+                    className="flex items-center justify-center w-11 h-11 rounded-xl bg-white/5 text-[#06b6d4] group-hover:scale-110 group-hover:bg-[#06b6d4]/10 transition-all duration-300"
+                    whileHover={{ rotate: 10 }}
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       {s.icon}
                     </svg>
-                  </span>
+                  </motion.span>
                   <span>
-                    <span className="block text-[0.7rem] uppercase tracking-wider text-muted">
+                    <span className="block text-[0.7rem] uppercase tracking-wider text-muted-light">
                       {s.label}
                     </span>
                     <span className="text-sm font-medium text-white/90 group-hover:text-white">
                       {s.value}
                     </span>
                   </span>
-                </a>
+                </motion.a>
               ))}
-            </div>
+            </motion.div>
 
-            {/* Availability badge */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mt-8 flex items-center gap-3 text-sm text-muted bg-white/[0.03] border border-white/5 rounded-full px-5 py-2.5 w-fit"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mt-8 flex items-center gap-3 text-sm text-muted-light bg-white/[0.03] border border-white/5 rounded-full px-5 py-2.5 w-fit"
             >
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
@@ -123,19 +154,33 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="rounded-3xl border border-white/8 bg-white/[0.03] p-7 sm:p-9"
+            className="rounded-3xl border border-white/8 bg-white/[0.03] p-7 sm:p-9 glass"
           >
             {status === "success" ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="h-full min-h-[300px] flex flex-col items-center justify-center text-center gap-3 text-[#FF6B6B]"
+                className="h-full min-h-[300px] flex flex-col items-center justify-center text-center gap-4 text-[#06b6d4]"
               >
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                <svg
+                  className="w-12 h-12"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M5 13l4 4L19 7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  />
                 </svg>
-                <p className="text-white font-semibold">Thank you!</p>
-                <p className="text-muted text-sm">I&apos;ll get back to you soon.</p>
+                <p className="text-white font-semibold text-xl">
+                  Thank you!
+                </p>
+                <p className="text-muted text-sm">
+                  I&apos;ll get back to you soon.
+                </p>
               </motion.div>
             ) : (
               <div className="space-y-6">
@@ -153,7 +198,7 @@ export default function Contact() {
                       value={formData[field.name]}
                       onChange={handleChange}
                       placeholder={`Your ${field.label.toLowerCase()}`}
-                      className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted-dim focus:border-[#FF6B6B]/60 focus:bg-white/[0.06] outline-none transition-all"
+                      className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted-dim focus:border-[#06b6d4]/60 focus:bg-white/[0.06] outline-none transition-all duration-300"
                     />
                   </div>
                 ))}
@@ -167,7 +212,7 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Tell me about your project"
-                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted-dim focus:border-[#FF6B6B]/60 focus:bg-white/[0.06] outline-none transition-all resize-none"
+                    className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-muted-dim focus:border-[#06b6d4]/60 focus:bg-white/[0.06] outline-none transition-all duration-300 resize-none"
                   />
                 </div>
                 <motion.button
@@ -175,19 +220,38 @@ export default function Contact() {
                   disabled={status === "submitting"}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-white text-ink-900 font-semibold px-6 py-3.5 rounded-full hover:bg-[#F3E8FF] transition-colors duration-300 disabled:opacity-70"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#06b6d4] to-[#7c3aed] text-white font-semibold px-6 py-3.5 rounded-full hover:shadow-[0_8px_30px_-8px_rgba(6,182,212,0.5)] transition-all duration-300 disabled:opacity-70"
                 >
                   {status === "submitting" ? (
                     <span className="flex gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-ink-900 animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-1.5 h-1.5 rounded-full bg-ink-900 animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-1.5 h-1.5 rounded-full bg-ink-900 animate-bounce" style={{ animationDelay: "300ms" }} />
+                      <span
+                        className="w-1.5 h-1.5 rounded-full bg-white animate-bounce"
+                        style={{ animationDelay: "0ms" }}
+                      />
+                      <span
+                        className="w-1.5 h-1.5 rounded-full bg-white animate-bounce"
+                        style={{ animationDelay: "150ms" }}
+                      />
+                      <span
+                        className="w-1.5 h-1.5 rounded-full bg-white animate-bounce"
+                        style={{ animationDelay: "300ms" }}
+                      />
                     </span>
                   ) : (
                     <>
                       Send Message
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path d="M5 12h14m-6-6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M5 12h14m-6-6l6 6-6 6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                        />
                       </svg>
                     </>
                   )}
