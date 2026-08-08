@@ -69,7 +69,7 @@ export default function ProjectModal({ project, onClose }) {
               transition={{ delay: 0.3 }}
               className="mb-6"
             >
-              <h4 className="text-xs uppercase tracking-wider text-[#06b6d4] font-semibold mb-3">
+              <h4 className="text-xs uppercase tracking-wider text-[#FFD700] font-semibold mb-3">
                 Tech Stack
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -79,7 +79,7 @@ export default function ProjectModal({ project, onClose }) {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: 0.3 + i * 0.03 }}
-                    className="text-[0.7rem] uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#06b6d4]/20 bg-[#06b6d4]/5 text-[#06b6d4]"
+                    className="text-[0.7rem] uppercase tracking-wider px-3 py-1.5 rounded-full border border-[#FFD700]/20 bg-[#FFD700]/5 text-[#FFD700]"
                   >
                     {tag}
                   </motion.span>
@@ -99,7 +99,7 @@ export default function ProjectModal({ project, onClose }) {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.02, y: -1 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold bg-gradient-to-r from-[#06b6d4] to-[#7c3aed] text-white shadow-[0_8px_30px_-8px_rgba(6,182,212,0.5)]"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold bg-gradient-to-r from-[#FFD700] to-[#FFD700] text-ink-900 shadow-[0_8px_30px_-8px_rgba(255,215,0,0.5)]"
               >
                 Live Demo
                 <svg
@@ -122,7 +122,7 @@ export default function ProjectModal({ project, onClose }) {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.02, y: -1 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border border-[#06b6d4]/30 text-white hover:bg-[#06b6d4]/5 transition-all"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-semibold border border-[#FFD700]/30 text-white hover:bg-[#FFD700]/5 transition-all"
               >
                 <svg
                   className="w-4 h-4"

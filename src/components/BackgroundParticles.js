@@ -43,7 +43,7 @@ export default function BackgroundParticles({ density = "medium" }) {
     const animate = () => {
       ctx.clearRect(0, 0, w, h);
 
-      ctx.fillStyle = "#06b6d4";
+      ctx.fillStyle = "#FFD700";
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx;
@@ -60,7 +60,7 @@ export default function BackgroundParticles({ density = "medium" }) {
         ctx.fill();
       }
 
-      ctx.strokeStyle = "rgba(6, 182, 212, 0.05)";
+      ctx.strokeStyle = "rgba(255, 215, 0, 0.05)";
       ctx.lineWidth = 0.5;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {

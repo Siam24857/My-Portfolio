@@ -17,25 +17,15 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata = {
   metadataBase: new URL("https://porfolioin1597.vercel.app/"),
 
-  title: "Sheikh Siam | Frontend Developer & UI Engineer",
+  title: "Sheikh Siam | Full-Stack Developer",
   description:
-    "Sheikh Siam is a full-stack developer building modern, responsive, and interactive web experiences with React, Next.js, JavaScript, and modern UI technologies. Explore projects, skills, and the development journey.",
+    "Sheikh Siam is a full-stack developer building scalable web applications with modern technologies. Specializing in React, Next.js, Node.js, Express, and cloud deployment.",
 
   keywords: [
-    "Frontend Developer",
-    "Full-Stack Developer",
-    "React",
-    "Next.js",
-    "JavaScript",
-    "TypeScript",
-    "Tailwind CSS",
-    "UI Engineer",
-    "Portfolio",
-    "Web Developer",
-    "Sheikh Siam",
-    "Bangladesh Developer",
-    "Three.js",
-    "WebGL",
+    "Full-Stack Developer", "React", "Next.js", "Node.js", "Express",
+    "TypeScript", "JavaScript", "Tailwind CSS", "MongoDB", "Firebase",
+    "Docker", "Git", "Web Developer", "Portfolio", "Sheikh Siam",
+    "Bangladesh Developer", "Scalable Applications",
   ],
 
   authors: [{ name: "Sheikh Siam" }],
@@ -48,28 +38,19 @@ export const metadata = {
   },
 
   openGraph: {
-    title: "Sheikh Siam | Frontend Developer & UI Engineer",
-    description:
-      "Building modern, responsive, and interactive web experiences with React, Next.js, and modern UI technologies.",
+    title: "Sheikh Siam | Full-Stack Developer",
+    description: "Building scalable web applications with modern technologies. Specializing in React, Next.js, Node.js, and cloud deployment.",
     url: "https://porfolioin1597.vercel.app/",
     siteName: "Sheikh Siam Portfolio",
-    images: [
-      {
-        url: "/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Sheikh Siam — Full-Stack Developer Portfolio",
-      },
-    ],
+    images: [{ url: "/opengraph-image.png", width: 1200, height: 630, alt: "Sheikh Siam — Full-Stack Developer Portfolio" }],
     type: "website",
     locale: "en_US",
   },
 
   twitter: {
     card: "summary_large_image",
-    title: "Sheikh Siam | Frontend Developer & UI Engineer",
-    description:
-      "Building modern, responsive, and interactive web experiences with React, Next.js, and modern UI technologies.",
+    title: "Sheikh Siam | Full-Stack Developer",
+    description: "Building scalable web applications with modern technologies. Specializing in React, Next.js, Node.js, and cloud deployment.",
     images: ["/opengraph-image.png"],
     creator: "@sheikhsiam",
   },
@@ -77,13 +58,7 @@ export const metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+    googleBot: { index: true, follow: true, "max-video-preview": -1, "max-image-preview": "large", "max-snippet": -1 },
   },
 
   category: "technology",
@@ -92,7 +67,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`h-full antialiased scroll-smooth ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="min-h-full flex flex-col bg-transparent text-slate-900 overflow-x-hidden">
+      <body className="min-h-full flex flex-col bg-ink-900 text-white overflow-x-hidden">
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

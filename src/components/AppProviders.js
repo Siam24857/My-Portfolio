@@ -37,7 +37,7 @@ export default function AppProviders({ children }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: loaded ? 1 : 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full"
+          className="w-full relative z-[1]"
         >
           {children}
         </motion.div>

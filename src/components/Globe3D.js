@@ -5,21 +5,21 @@ import { Suspense, useMemo, useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 
 const TECH_ICONS = [
-  { name: "HTML", color: "#F43F5E" },
-  { name: "CSS", color: "#06B6D4" },
-  { name: "TypeScript", color: "#3B82F6" },
-  { name: "React", color: "#06B6D4" },
+  { name: "HTML", color: "#FFD700" },
+  { name: "CSS", color: "#FFD700" },
+  { name: "TypeScript", color: "#FFD700" },
+  { name: "React", color: "#FFD700" },
   { name: "Next.js", color: "#FFFFFF" },
-  { name: "Tailwind", color: "#06B6D4" },
-  { name: "Node.js", color: "#10B981" },
-  { name: "MongoDB", color: "#10B981" },
-  { name: "Git", color: "#EF4444" },
-  { name: "Docker", color: "#06B6D4" },
-  { name: "Firebase", color: "#FBBF24" },
-  { name: "AI Tools", color: "#A78BFA" },
-  { name: "Express", color: "#F59E0B" },
-  { name: "PostgreSQL", color: "#3B82F6" },
-  { name: "JavaScript", color: "#FBBF24" },
+  { name: "Tailwind", color: "#FFD700" },
+  { name: "Node.js", color: "#FFD700" },
+  { name: "MongoDB", color: "#FFD700" },
+  { name: "Git", color: "#FFD700" },
+  { name: "Docker", color: "#FFD700" },
+  { name: "Firebase", color: "#FFD700" },
+  { name: "AI Tools", color: "#FFD700" },
+  { name: "Express", color: "#FFD700" },
+  { name: "PostgreSQL", color: "#FFD700" },
+  { name: "JavaScript", color: "#FFD700" },
 ];
 
 const CITY_LIGHTS = [
@@ -70,8 +70,8 @@ function createLightsTexture() {
     const v = ((90 - city.lat) / 180) * canvas.height;
     const rad = size * 0.018 * city.size;
     const grad = ctx.createRadialGradient(u, v, 0, u, v, rad * 3);
-    grad.addColorStop(0, "#06b6d4");
-    grad.addColorStop(0.5, "#06b6d4");
+    grad.addColorStop(0, "#FFD700");
+    grad.addColorStop(0.5, "#FFD700");
     grad.addColorStop(1, "transparent");
     ctx.fillStyle = grad;
     ctx.beginPath();
@@ -128,7 +128,7 @@ function Earth() {
   useEffect(() => {
     const m = materialRef.current;
     if (m && lightsTex) {
-      m.emissive = new THREE.Color("#01243d");
+      m.emissive = new THREE.Color("#FFD700");
       m.emissiveIntensity = 0.4;
       m.emissiveMap = lightsTex;
     }
@@ -140,9 +140,9 @@ function Earth() {
 
   return (
     <group ref={earthRef}>
-      <ambientLight intensity={0.35} color="#06b6d4" />
+      <ambientLight intensity={0.35} color="#FFD700" />
       <directionalLight position={[5, 3, 5]} intensity={1} color="#ffffff" />
-      <hemisphereLight skyColor="#06b6d4" groundColor="#020a17" intensity={0.3} />
+      <hemisphereLight skyColor="#FFD700" groundColor="#020a17" intensity={0.3} />
       <mesh receiveShadow castShadow>
         <sphereGeometry args={[2.2, 64, 64]} />
         <meshStandardMaterial
@@ -167,8 +167,8 @@ function EarthGlow() {
     canvas.height = size;
     const ctx = canvas.getContext("2d");
     const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-    gradient.addColorStop(0, "#06b6d4");
-    gradient.addColorStop(0.5, "#7c3aed");
+    gradient.addColorStop(0, "#FFD700");
+    gradient.addColorStop(0.5, "#FFD700");
     gradient.addColorStop(1, "transparent");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, size, size);
@@ -246,7 +246,7 @@ function NetworkArcs({ radius = 2.55 }) {
           attach="material"
           size={0.05}
           sizeAttenuation
-          color="#06b6d4"
+          color="#FFD700"
           transparent
           opacity={0.7}
           blending={THREE.AdditiveBlending}
@@ -256,7 +256,7 @@ function NetworkArcs({ radius = 2.55 }) {
         <lineBasicMaterial
           ref={materialRef}
           attach="material"
-          color="#06b6d4"
+          color="#FFD700"
           transparent
           opacity={0.35}
           blending={THREE.AdditiveBlending}
@@ -269,7 +269,7 @@ function NetworkArcs({ radius = 2.55 }) {
 function TechOrb({ name, color }) {
   const meshRef = useRef();
   const [hovered, setHovered] = useState(false);
-  const c = useMemo(() => new THREE.Color(color || "#06b6d4"), [color]);
+  const c = useMemo(() => new THREE.Color(color || "#FFD700"), [color]);
 
   useFrame(() => {
     if (meshRef.current) {
@@ -306,7 +306,7 @@ function TechOrb({ name, color }) {
         <div
           className="px-1.5 py-0.5 rounded text-[0.55rem] font-mono whitespace-nowrap"
           style={{
-            color: color || "#06b6d4",
+            color: "#FFD700",
             opacity: hovered ? 1 : 0,
             textShadow: "0 0 8px rgba(0,0,0,0.8)",
           }}
@@ -375,14 +375,14 @@ function AnimatedOrbitRings({ count = 3 }) {
           <mesh key={`ring-${i}`} rotation={new THREE.Euler(0, (i * Math.PI) / 6, 0)}>
             <ringGeometry args={[radius - 0.02, radius + 0.02, 128]} />
             <meshBasicMaterial
-              color="#06b6d4"
+              color="#FFD700"
               opacity={0.08 + i * 0.03}
               transparent
               blending={THREE.AdditiveBlending}
               side={THREE.DoubleSide}
             />
             <lineLoop geometry={geom}>
-              <lineBasicMaterial color="#06b6d4" opacity={0.15} transparent />
+              <lineBasicMaterial color="#FFD700" opacity={0.15} transparent />
             </lineLoop>
           </mesh>
         );
@@ -394,9 +394,9 @@ function AnimatedOrbitRings({ count = 3 }) {
 function Scene() {
   return (
     <>
-      <color attach="background" args={["#000000"]} />
-      <fog attach="fog" args={["#000000", 8, 30]} />
-      <hemisphereLight skyColor="#06b6d4" groundColor="#020a17" intensity={0.4} />
+      <color attach="background" args={["#050505"]} />
+      <fog attach="fog" args={["#050505", 8, 30]} />
+      <hemisphereLight skyColor="#FFD700" groundColor="#020a17" intensity={0.4} />
       <Earth />
       <NetworkArcs />
       <OrbitingTech />

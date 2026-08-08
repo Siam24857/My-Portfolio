@@ -10,7 +10,7 @@ const CONCEPTS = [
   { id: "react", label: "React.js", color: "#61DAFB", x: 11, y: -13 },
   { id: "next", label: "Next.js", color: "#FFF", x: -9, y: -15 },
   { id: "ts", label: "TypeScript", color: "#3178C6", x: 8, y: 16 },
-  { id: "tailwind", label: "Tailwind CSS", color: "#06B6D4", x: -11, y: 8 },
+  { id: "tailwind", label: "Tailwind CSS", color: "#FFD700", x: -11, y: 8 },
   { id: "three", label: "Three.js", color: "#00F0FF", x: 13, y: -6 },
   { id: "gsap", label: "GSAP", color: "#88CE02", x: -8, y: -9 },
   { id: "framer", label: "Framer Motion", color: "#0055FF", x: 10, y: 6 },
@@ -99,18 +99,18 @@ function TimelineItem({ item, index }) {
         initial={{ scale: 0 }}
         animate={inView ? { scale: 1 } : {}}
         transition={{ duration: 0.5, delay: index * 0.12 + 0.1 }}
-        className="absolute left-[14px] top-1.5 w-3 h-3 rounded-full bg-gradient-to-br from-[#06b6d4] to-[#a78bfa] ring-4 ring-ink-900 group-hover:scale-125 transition-transform duration-300"
+        className="absolute left-[14px] top-1.5 w-3 h-3 rounded-full bg-gradient-to-br from-[#FFD700] to-[#FFD700] ring-4 ring-ink-900 group-hover:scale-125 transition-transform duration-300"
       />
       {index < TIMELINE.length - 1 && (
-        <span className="absolute left-[20px] top-5 bottom-0 w-px bg-gradient-to-b from-[#06b6d4]/30 to-transparent" />
+        <span className="absolute left-[20px] top-5 bottom-0 w-px bg-gradient-to-b from-[#FFD700]/30 to-transparent" />
       )}
       <div className="flex flex-wrap items-center gap-3 mb-2">
-        <span className="text-sm font-mono text-[#06b6d4]">{item.period}</span>
-        <span className="text-[0.65rem] uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-[#06b6d4]/20 text-[#a78bfa] bg-[#06b6d4]/5">
+        <span className="text-sm font-mono text-[#FFD700]">{item.period}</span>
+        <span className="text-[0.65rem] uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-[#FFD700]/20 text-[#FFD700] bg-[#FFD700]/5">
           {item.tag}
         </span>
       </div>
-      <h3 className="text-xl font-semibold tracking-tight mb-2 group-hover:text-[#06b6d4] transition-colors">
+      <h3 className="text-xl font-semibold tracking-tight mb-2 group-hover:text-[#FFD700] transition-colors">
         {item.title}
       </h3>
       <p className="text-muted-light leading-relaxed max-w-xl">
@@ -186,8 +186,8 @@ export default function Journey() {
         style={{ y: bgY }}
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-[#06b6d4]/6 blur-[160px]" />
-        <div className="absolute bottom-10 right-0 w-[360px] h-[360px] rounded-full bg-[#7c3aed]/6 blur-[120px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-[#FFD700]/5 blur-[160px]" />
+        <div className="absolute bottom-10 right-0 w-[360px] h-[360px] rounded-full bg-[#7c3aed]/5 blur-[120px]" />
       </motion.div>
 
       <FloatingNodes />
@@ -210,7 +210,7 @@ export default function Journey() {
           className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.1] max-w-2xl mb-6"
         >
           From <span className="text-gradient-brand">first lines of code</span>{" "}
-          to UI engineering
+          to full-stack engineering
         </motion.h2>
 
         <motion.p
@@ -218,7 +218,7 @@ export default function Journey() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-muted-light max-w-xl mb-14"
+          className="text-white/70 max-w-xl mb-14"
         >
           A continuous path of learning, building, and refining — every step
           sharpening how I craft interfaces people love to use.

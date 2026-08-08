@@ -17,62 +17,43 @@ export default function CustomCursor() {
   const ringY = useSpring(mousePos.y - 22, { damping: 20, stiffness: 140 });
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const onMouseMove = (e) => {
       setMousePos({ x: e.clientX, y: e.clientY });
-      setIsVisible(true);
-
-      // Emit energy particles behind cursor on movement
-      if (Math.random() > 0.45) {
-        particlesRef.current.push({
-          x: e.clientX,
-          y: e.clientY,
-          vx: (Math.random() - 0.5) * 1.8,
-          vy: (Math.random() - 0.5) * 1.8,
-          size: Math.random() * 3 + 1.5,
-          alpha: 0.8,
-          color: Math.random() > 0.5 ? "#06b6d4" : "#a78bfa",
-        });
-      }
+      if (!isVisible) setIsVisible(true);
     };
+    const onMouseEnter = () => setIsVisible(true);
+    const onMouseLeave = () => setIsVisible(false);
+    const onMouseDown = () => setIsClicking(true);
+    const onMouseUp = () => setIsClicking(false);
 
-    const handleMouseDown = () => setIsClicking(true);
-    const handleMouseUp = () => setIsClicking(false);
-    const handleMouseLeave = () => setIsVisible(false);
-
-    const handleMouseOver = (e) => {
+    const handleHover = (e) => {
       const target = e.target;
-      const isInteractive =
-        target.tagName === "BUTTON" ||
-        target.tagName === "A" ||
-        target.closest("button") ||
-        target.closest("a") ||
-        target.closest(".cursor-pointer") ||
-        target.classList.contains("interactive");
-
-      setIsHovering(Boolean(isInteractive));
+      const interactive = target.closest('a, button, [role="button"], input, textarea, .cursor-pointer');
+      setIsHovering(!!interactive);
     };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-    window.addEventListener("mouseleave", handleMouseLeave);
-    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseenter", onMouseEnter);
+    document.addEventListener("mouseleave", onMouseLeave);
+    window.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("mouseover", handleHover);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
-      window.removeEventListener("mouseleave", handleMouseLeave);
-      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseenter", onMouseEnter);
+      document.removeEventListener("mouseleave", onMouseLeave);
+      window.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("mouseover", handleHover);
     };
-  }, []);
+  }, [isVisible]);
 
-  // Particle Canvas Loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
-    let animId;
+    let animationFrameId;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -81,74 +62,108 @@ export default function CustomCursor() {
     resize();
     window.addEventListener("resize", resize);
 
-    const loop = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      size: Math.random() * 1.5 + 0.5,
+      opacity: Math.random() * 0.5 + 0.1,
+    }));
+    particlesRef.current = particles;
 
-      particlesRef.current.forEach((p, idx) => {
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
-        p.alpha -= 0.025;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
 
-        if (p.alpha <= 0) {
-          particlesRef.current.splice(idx, 1);
-          return;
-        }
-
-        ctx.save();
-        ctx.globalAlpha = p.alpha;
-        ctx.fillStyle = p.color;
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = 8;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 215, 0, ${p.opacity})`;
         ctx.fill();
-        ctx.restore();
       });
 
-      animId = requestAnimationFrame(loop);
+      if (isVisible && mousePos.x > 0 && mousePos.y > 0) {
+        particles.forEach((p) => {
+          const dx = mousePos.x - p.x;
+          const dy = mousePos.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            const force = (120 - dist) / 120;
+            p.vx -= (dx / dist) * force * 0.02;
+            p.vy -= (dy / dist) * force * 0.02;
+          }
+        });
+      }
+
+      animationFrameId = requestAnimationFrame(draw);
     };
-    loop();
+    draw();
 
     return () => {
       window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animId);
+      cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [isVisible, mousePos.x, mousePos.y]);
 
-  if (!isVisible) return null;
+  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+    return null;
+  }
 
   return (
     <>
-      {/* Particle Canvas Trail */}
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 pointer-events-none z-[9997] hidden md:block"
+        className="fixed inset-0 pointer-events-none z-[9998]"
+        style={{ opacity: isVisible ? 1 : 0 }}
       />
-
-      {/* Core Glowing Dot */}
-      <motion.div
-        style={{ translateX: cursorX, translateY: cursorY }}
-        className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9999] hidden md:block transition-all duration-150 ${
-          isClicking ? "scale-75 bg-[#f43f5e]" : "bg-[#06b6d4]"
-        } ${isHovering ? "w-5 h-5 bg-[#a78bfa] shadow-[0_0_20px_#a78bfa]" : "w-4 h-4 shadow-[0_0_12px_#06b6d4]"}`}
-      />
-
-      {/* Magnetic Outer Ring */}
-      <motion.div
-        style={{
-          translateX: ringX,
-          translateY: ringY,
-        }}
-        animate={{
-          scale: isClicking ? 0.7 : isHovering ? 1.6 : 1,
-          borderColor: isHovering ? "rgba(167, 139, 250, 0.8)" : "rgba(6, 182, 212, 0.4)",
-        }}
-        transition={{ duration: 0.2 }}
-        className="fixed top-0 left-0 w-11 h-11 rounded-full border border-[#06b6d4]/40 pointer-events-none z-[9998] hidden md:block backdrop-blur-[1px]"
-      >
-        <div className="absolute inset-0 rounded-full bg-[#06b6d4]/10 blur-sm" />
-      </motion.div>
+      {isVisible && (
+        <>
+          <motion.div
+            className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full mix-blend-difference"
+            style={{
+              width: 8,
+              height: 8,
+              x: cursorX,
+              y: cursorY,
+            }}
+          >
+            <div className="w-2 h-2 rounded-full bg-[#FFD700]" />
+          </motion.div>
+          <motion.div
+            className="fixed top-0 left-0 pointer-events-none z-[9998] rounded-full border border-[#FFD700]/40"
+            style={{
+              width: 44,
+              height: 44,
+              x: ringX,
+              y: ringY,
+              scale: isHovering ? 1.5 : 1,
+              opacity: isHovering ? 0.6 : 0.3,
+              transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          />
+          {isClicking && (
+            <motion.div
+              className="fixed top-0 left-0 pointer-events-none z-[9997] rounded-full bg-[#FFD700]/20"
+              style={{
+                width: 60,
+                height: 60,
+                x: cursorX,
+                y: cursorY,
+                scale: 1.8,
+                opacity: 0,
+                transition: "all 0.5s ease-out",
+              }}
+              animate={{ scale: 2.5, opacity: 0 }}
+            />
+          )}
+        </>
+      )}
     </>
   );
 }
-

@@ -5,7 +5,7 @@ import { useState, useRef, useMemo, Suspense } from "react";
 import * as THREE from "three";
 import { PROJECTS } from "@/lib/data";
 
-const ICON_COLORS = ["#06b6d4", "#a78bfa", "#f43f5e", "#10b981", "#f59e0b", "#3b82f6"];
+const ICON_COLORS = ["#FFD700", "#FFD700", "#FFD700", "#FFD700", "#FFD700", "#FFD700"];
 
 function DeveloperPlanet() {
   const ref = useRef();
@@ -27,26 +27,26 @@ function DeveloperPlanet() {
         <sphereGeometry args={[0.8, 48, 48]} />
         <meshStandardMaterial
           color="#050505"
-          emissive="#06b6d4"
+          emissive="#FFD700"
           emissiveIntensity={0.7}
           roughness={0.2}
           metalness={0.7}
         />
         <Html position={[0, 1.2, 0]} center distanceFactor={14}>
           <div className="text-center">
-            <div className="text-[0.55rem] font-mono text-[#06b6d4] tracking-wider">
+            <div className="text-[0.55rem] font-mono text-[#FFD700] tracking-wider">
               DEV
             </div>
             <div className="text-[0.45rem] text-white/50 mt-0.5">Central Node</div>
           </div>
         </Html>
-        <pointLight color="#06b6d4" intensity={1.2} distance={4} />
+        <pointLight color="#FFD700" intensity={1.2} distance={4} />
       </mesh>
 
       <mesh ref={outerRef}>
         <ringGeometry args={[0.95, 1.05, 64]} />
         <meshBasicMaterial
-          color="#06b6d4"
+          color="#FFD700"
           opacity={0.15}
           transparent
           blending={THREE.AdditiveBlending}
@@ -57,7 +57,7 @@ function DeveloperPlanet() {
       <mesh ref={outerRef}>
         <sphereGeometry args={[1.02, 32, 32]} />
         <meshBasicMaterial
-          color="#06b6d4"
+          color="#FFD700"
           opacity={0.08}
           transparent
           depthWrite={false}
@@ -140,7 +140,7 @@ function ProjectPlanet({ project, index, onSelect }) {
 
         {hovered && (
           <Html distanceFactor={10} position={[0, 0.8, 0]} center>
-            <div className="bg-ink-800/90 backdrop-blur-xl border border-[#06b6d4]/30 rounded-lg px-3 py-2 text-center animate-fade-in">
+            <div className="bg-ink-800/90 backdrop-blur-xl border border-[#FFD700]/30 rounded-lg px-3 py-2 text-center animate-fade-in">
               <div className="text-white font-semibold text-xs mb-1">
                 {project.title}
               </div>
@@ -148,7 +148,7 @@ function ProjectPlanet({ project, index, onSelect }) {
                 {tags.slice(0, 4).map((tag) => (
                   <span
                     key={tag}
-                    className="text-[0.5rem] text-[#06b6d4] bg-[#06b6d4]/10 px-1.5 py-0.25 rounded"
+                    className="text-[0.5rem] text-[#FFD700] bg-[#FFD700]/10 px-1.5 py-0.25 rounded"
                   >
                     {tag}
                   </span>
@@ -188,7 +188,7 @@ function OrbitPath({ radius, height, color }) {
       <bufferGeometry attach="geometry" ref={(g) => g && g.setFromPoints(points)} />
       <lineBasicMaterial
         attach="material"
-        color={color || "#06b6d4"}
+        color={color || "#FFD700"}
         opacity={0.15}
         transparent
         blending={THREE.AdditiveBlending}
@@ -200,10 +200,10 @@ function OrbitPath({ radius, height, color }) {
 function Scene({ onSelect }) {
   return (
     <>
-      <color attach="background" args={["#000000"]} />
-      <ambientLight intensity={0.4} color="#06b6d4" />
+      <color attach="background" args={["#050505"]} />
+      <ambientLight intensity={0.4} color="#FFD700" />
       <directionalLight position={[5, 5, 5]} intensity={1} />
-      <hemisphereLight skyColor="#06b6d4" groundColor="#000" intensity={0.3} />
+      <hemisphereLight skyColor="#FFD700" groundColor="#000" intensity={0.3} />
 
       <DeveloperPlanet />
 
@@ -212,7 +212,7 @@ function Scene({ onSelect }) {
           key={`ring-${i}`}
           radius={3.2 + i * 0.6}
           height={0}
-          color="#06b6d4"
+          color="#FFD700"
         />
       ))}
 

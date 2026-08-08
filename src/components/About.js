@@ -18,11 +18,11 @@ const EXPERTISE = [
 ];
 
 const SKILL_BARS = [
-  { name: "React & Next.js", level: 92, color: "#06b6d4" },
-  { name: "JavaScript / TypeScript", level: 88, color: "#a78bfa" },
+  { name: "React & Next.js", level: 92, color: "#FFD700" },
+  { name: "JavaScript / TypeScript", level: 88, color: "#FFD700" },
+  { name: "Node.js / Express", level: 85, color: "#a78bfa" },
   { name: "HTML / CSS / Tailwind", level: 95, color: "#f43f5e" },
-  { name: "UI / UX Design", level: 82, color: "#06b6d4" },
-  { name: "Git & GitHub", level: 85, color: "#a78bfa" },
+  { name: "UI / UX Design", level: 82, color: "#FFD700" },
 ];
 
 function Counter({ to, suffix }) {
@@ -108,8 +108,8 @@ export default function About() {
         style={{ y: bgY }}
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#06b6d4]/8 blur-[140px]" />
-        <div className="absolute bottom-10 right-0 w-[400px] h-[400px] rounded-full bg-[#7c3aed]/8 blur-[120px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-[#FFD700]/5 blur-[140px]" />
+        <div className="absolute bottom-10 right-0 w-[400px] h-[400px] rounded-full bg-[#7c3aed]/5 blur-[120px]" />
       </motion.div>
 
       <div className="container-page relative">
@@ -136,13 +136,13 @@ export default function About() {
                 alt="Sheikh Siam"
                 className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+                className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
               />
             </div>
 
@@ -151,10 +151,10 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="absolute -bottom-8 -right-8 hidden sm:block p-6 rounded-2xl glass-strong border border-[#06b6d4]/20"
+              className="absolute -bottom-8 -right-8 hidden sm:block p-6 rounded-2xl glass-strong border border-[#FFD700]/20"
             >
-              <p className="text-2xl font-bold text-gradient-brand">Frontend</p>
-              <p className="text-xs text-muted">UI Engineer</p>
+              <p className="text-2xl font-bold text-gradient-brand">Full-Stack</p>
+              <p className="text-xs text-muted">Developer</p>
             </motion.div>
           </motion.div>
 
@@ -165,19 +165,19 @@ export default function About() {
             viewport={{ once: true, margin: "-60px" }}
             className="space-y-8"
           >
-            <motion.h2 variants={item} className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.1] text-slate-900">
-              A frontend engineer who builds with{" "}
+            <motion.h2 variants={item} className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.1] text-white">
+              A developer who builds with{" "}
               <span className="text-gradient-brand">intent</span>
             </motion.h2>
 
-            <motion.p variants={item} className="text-slate-700 font-medium leading-relaxed text-lg">
+            <motion.p variants={item} className="text-white/70 font-medium leading-relaxed text-lg">
               My development journey started with a curiosity for how interfaces
               come alive in the browser. Today I specialize in crafting polished,
-              production-grade frontends — turning designs into fast, accessible,
+              production-grade full-stack applications — turning designs into fast, accessible,
               and delightful experiences.
             </motion.p>
 
-            <motion.p variants={item} className="text-slate-700 font-medium leading-relaxed">
+            <motion.p variants={item} className="text-white/70 font-medium leading-relaxed">
               I bring a problem-solving mindset to every build: component
               architecture, clean state management, and purposeful motion. My
               passion is building beautiful user experiences that feel effortless.
@@ -187,14 +187,14 @@ export default function About() {
               {EXPERTISE.map((point) => (
                 <li
                   key={point}
-                  className="flex items-start gap-3 text-slate-800 font-medium group"
+                  className="flex items-start gap-3 text-white/80 font-medium group"
                 >
                   <motion.span
-                    className="mt-2 w-2 h-2 rounded-full bg-[#0284c7] shrink-0"
+                    className="mt-2 w-2 h-2 rounded-full bg-[#FFD700] shrink-0"
                     animate={{ scale: [1, 1.3, 1] }}
                     transition={{ duration: 2 }}
                   />
-                  <span className="group-hover:text-[#0284c7] transition-colors">
+                  <span className="group-hover:text-[#FFD700] transition-colors">
                     {point}
                   </span>
                 </li>
@@ -205,12 +205,12 @@ export default function About() {
               {STATS.map((st) => (
                 <div
                   key={st.label}
-                  className="rounded-2xl border border-slate-200/80 bg-white/80 glass px-3 py-5 text-center shadow-sm"
+                  className="rounded-2xl border border-white/10 bg-white/[0.03] glass px-3 py-5 text-center shadow-sm"
                 >
-                  <div className="text-3xl font-black tracking-tight bg-gradient-to-b from-[#0284c7] to-[#7c3aed] bg-clip-text text-transparent">
+                  <div className="text-3xl font-black tracking-tight text-gradient-brand">
                     <Counter to={st.value} suffix={st.suffix} />
                   </div>
-                  <p className="text-[0.65rem] text-slate-600 font-extrabold uppercase tracking-wider mt-1">
+                  <p className="text-[0.65rem] text-muted font-extrabold uppercase tracking-wider mt-1">
                     {st.label}
                   </p>
                 </div>
@@ -218,7 +218,7 @@ export default function About() {
             </motion.div>
 
             <motion.div variants={item} className="pt-6">
-              <h4 className="text-sm font-extrabold text-[#7c3aed] mb-4 tracking-wider uppercase">
+              <h4 className="text-sm font-extrabold text-[#FFD700] mb-4 tracking-wider uppercase">
                 Core Skills
               </h4>
               {SKILL_BARS.map((skill, i) => (
