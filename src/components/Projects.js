@@ -1,13 +1,113 @@
 "use client";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
-import ProjectGalaxy from "@/components/ProjectGalaxy";
-import ProjectModal from "@/components/ProjectModal";
-import BackgroundParticles from "@/components/BackgroundParticles";
 import { PROJECTS } from "@/lib/data";
 
 const FILTERS = ["All", "Full Stack", "Frontend", "AI"];
+
+function ProjectCard({ project, index, featured }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="group relative w-full h-[400px] overflow-hidden border border-border-subtle"
+      style={{ borderRadius: 0 }}
+    >
+      {/* Project Image */}
+      <div className="absolute inset-0">
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-void via-void/70 to-transparent z-10" />
+        <div className="absolute inset-0 bg-coral/5 z-10 transition-opacity duration-500" style={{ opacity: isHovered ? 0.2 : 0 }} />
+      </div>
+
+      {/* Featured badge */}
+      {featured && (
+        <div className="absolute top-4 left-4 z-20">
+          <span className="bg-coral text-void text-[9px] font-bold tracking-widest px-2 py-1 font-mono">
+            FEATURED
+          </span>
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 z-20">
+        <motion.h3
+          animate={{ y: isHovered ? -8 : 0 }}
+          transition={{ duration: 0.4 }}
+          className="text-2xl sm:text-3xl font-heading font-bold text-text mb-2"
+        >
+          {project.title}
+        </motion.h3>
+        <motion.p
+          animate={{ y: isHovered ? -8 : 0, opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.4, delay: 0.05 }}
+          className="text-sm text-muted mb-4 line-clamp-2"
+        >
+          {project.description}
+        </motion.p>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-[0.65rem] font-mono text-muted px-2.5 py-1 border border-border-subtle"
+              style={{ borderRadius: 0 }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* Action buttons */}
+        <motion.div
+          animate={{ y: isHovered ? 0 : 20, opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.4 }}
+          className="flex flex-wrap gap-3"
+        >
+          <motion.a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 text-sm font-bold font-heading bg-coral text-void px-5 py-2.5 border border-coral hover:bg-transparent hover:text-coral transition-all duration-300"
+            style={{ borderRadius: 0 }}
+          >
+            LIVE DEMO
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M5 12h14m-6-6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" />
+            </svg>
+          </motion.a>
+          <motion.a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 text-sm font-bold font-heading border border-text text-text px-5 py-2.5 hover:border-coral hover:text-coral transition-all duration-300"
+            style={{ borderRadius: 0 }}
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+            </svg>
+            GITHUB
+          </motion.a>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Projects() {
   const sectionRef = useRef(null);
@@ -17,30 +117,26 @@ export default function Projects() {
   });
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [selected, setSelected] = useState(null);
-  const [showGalaxy, setShowGalaxy] = useState(false);
-
-  useEffect(() => { const timer = setTimeout(() => setShowGalaxy(true), 300); return () => clearTimeout(timer); }, []);
 
   const filtered = PROJECTS.filter(
-    (p) => activeFilter === "All" || p.category === activeFilter || (activeFilter === "AI" && p.tags.includes("Gemini API")) || (activeFilter === "UI/UX" && (p.tags.includes("Framer Motion") || p.tags.includes("GSAP")))
+    (p) => activeFilter === "All" || p.category === activeFilter
   );
+
+  const featured = filtered.find((p) => p.featured);
+  const rest = filtered.filter((p) => !p.featured);
 
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 px-6 overflow-hidden bg-transparent"
+      className="relative py-32 px-6 overflow-hidden bg-void"
       id="projects"
     >
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[480px] rounded-full bg-[#FFD700]/5 blur-[160px]" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-[#7c3aed]/5 blur-[140px]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[480px] rounded-full bg-coral/5 blur-[160px]" />
       </motion.div>
-
-      <BackgroundParticles density="medium" />
 
       <div className="container-page relative">
         <motion.div
@@ -57,9 +153,9 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4"
+          className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4 font-heading"
         >
-          Projects I&apos;ve <span className="text-gradient-brand">designed & built</span>
+          Projects I&apos;ve <span className="text-coral">designed & built</span>
         </motion.h2>
 
         <motion.p
@@ -67,10 +163,9 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-white/70 max-w-xl mb-10"
+          className="text-muted max-w-xl mb-10"
         >
-          Each card below orbits a central developer sphere. Click a project to
-          dive into its story, tech stack, and live deployment.
+          Each project is a unique challenge solved with clean code and modern design.
         </motion.p>
 
         <motion.div
@@ -85,105 +180,30 @@ export default function Projects() {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
               onClick={() => setActiveFilter(f)}
-              className={`text-xs uppercase tracking-widest font-bold px-5 py-2.5 rounded-full border transition-all duration-300 ${
+              className={`text-xs uppercase tracking-widest font-bold px-5 py-2.5 transition-all duration-300 font-heading ${
                 activeFilter === f
-                  ? "bg-gradient-to-r from-[#FFD700] to-[#FFD700] border-transparent text-ink-900 shadow-[0_8px_24px_-8px_rgba(255,215,0,0.45)]"
-                  : "border-white/10 text-muted hover:border-[#FFD700]/50 hover:text-white bg-white/[0.03]"
+                  ? "bg-coral text-void border border-coral"
+                  : "border border-border-subtle text-muted hover:text-coral hover:border-coral/50 bg-transparent"
               }`}
+              style={{ borderRadius: 0 }}
             >
               {f}
             </motion.button>
           ))}
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative rounded-2xl overflow-hidden border border-white/8 bg-white/[0.01] glass"
-        >
-          <div className="h-[560px] sm:h-[640px]">
-            {showGalaxy && <ProjectGalaxy onSelect={(project) => setSelected(project)} />}
+        <div className="space-y-6">
+          {featured && (
+            <ProjectCard project={featured} index={0} featured />
+          )}
+
+          <div className="grid sm:grid-cols-2 gap-6">
+            {rest.map((project, i) => (
+              <ProjectCard key={project.id} project={project} index={i + 1} featured={false} />
+            ))}
           </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-16"
-        >
-          {filtered.map((project, i) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              whileHover={{ y: -6, scale: 1.01 }}
-              className="group relative rounded-2xl overflow-hidden border border-white/8 bg-white/[0.03] hover:border-[#FFD700]/30 transition-all cursor-pointer"
-              onClick={() => setSelected(project)}
-            >
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink-900/60 via-transparent to-transparent" />
-              </div>
-              <div className="p-5">
-                <h3 className="text-lg font-bold tracking-tight mb-2 group-hover:text-[#FFD700] transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-xs text-muted mb-3 line-clamp-2">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {project.tags.slice(0, 4).map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[0.6rem] uppercase tracking-wider px-2 py-0.5 rounded-full border border-white/10 text-muted bg-white/5"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-3">
-                  <motion.a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="text-xs font-bold px-4 py-2 rounded-full bg-[#FFD700] text-ink-900 hover:bg-[#FFD700]/90 transition-colors shadow-[0_4px_15px_rgba(255,215,0,0.3)]"
-                  >
-                    Live Demo
-                  </motion.a>
-                  <motion.a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="text-xs font-bold px-4 py-2 rounded-full border border-white/20 text-white hover:border-[#FFD700]/40 hover:text-[#FFD700] transition-colors"
-                  >
-                    GitHub
-                  </motion.a>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        </div>
       </div>
-
-      <ProjectModal project={selected} onClose={() => setSelected(null)} />
     </section>
   );
 }

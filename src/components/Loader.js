@@ -3,64 +3,49 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Loader({ onLoaded, progress = 0 }) {
-  const [visible] = useState(true);
-
   return (
     <AnimatePresence>
-      {visible && (
+      <motion.div
+        initial={{ y: 0 }}
+        exit={{ y: "-100vh" }}
+        transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
+        className="fixed inset-0 z-[1000] flex items-center justify-center bg-void overflow-hidden"
+      >
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed inset-0 z-[1000] flex items-center justify-center bg-ink-900 overflow-hidden"
+          transition={{ duration: 0.4 }}
+          className="flex flex-col items-center gap-8"
         >
-          <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#FFD700]/15 via-[#FFD700]/8 to-transparent blur-[120px]" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-gradient-to-tr from-[#FFD700] to-[#FFD700] opacity-20 blur-[40px] animate-spin-slow" />
-          </div>
-
-          <div className="relative z-10 flex flex-col items-center gap-10">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative"
+          {/* SVG Stroke Animation */}
+          <svg width="120" height="120" viewBox="0 0 120 120" className="text-white">
+            <text
+              x="60"
+              y="75"
+              textAnchor="middle"
+              fontSize="48"
+              fontWeight="800"
+              fontFamily="Syne, sans-serif"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeDasharray="200"
+              strokeDashoffset="200"
+              className="animate-stroke"
             >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, ease: "linear", repeat: Infinity }}
-                className="flex items-center justify-center w-24 h-24 rounded-full border-2 border-[#FFD700]/30"
-              >
-                <motion.div
-                  animate={{ opacity: [0.3, 0.8, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-3 h-3 rounded-full bg-[#FFD700] shadow-glow-neon"
-                />
-              </motion.div>
-              <div className="absolute -inset-3 rounded-full bg-gradient-to-r from-[#FFD700] to-[#FFD700] opacity-20 blur-xl animate-pulse-ring" />
-            </motion.div>
+              SS
+            </text>
+          </svg>
 
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="h-px bg-gradient-to-r from-[#FFD700] to-[#FFD700] rounded-full"
-            />
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-sm text-muted"
-            >
-              Initializing developer universe{" "}
-              <span className="text-[#FFD700] font-mono">
-                {Math.round(progress)}%
-              </span>
-            </motion.p>
-          </div>
+          {/* Red line sweep */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.6, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="w-48 h-px bg-coral origin-left"
+          />
         </motion.div>
-      )}
+      </motion.div>
     </AnimatePresence>
   );
 }

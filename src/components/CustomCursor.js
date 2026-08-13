@@ -7,20 +7,28 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const particlesRef = useRef([]);
-  const canvasRef = useRef(null);
+  const [hoverLabel, setHoverLabel] = useState("");
+  const ghostsRef = useRef([]);
+  const rafRef = useRef(null);
 
-  const springConfig = { damping: 24, stiffness: 260 };
-  const cursorX = useSpring(mousePos.x - 8, springConfig);
-  const cursorY = useSpring(mousePos.y - 8, springConfig);
-  const ringX = useSpring(mousePos.x - 22, { damping: 20, stiffness: 140 });
-  const ringY = useSpring(mousePos.y - 22, { damping: 20, stiffness: 140 });
+  const cursorX = useSpring(mousePos.x - 3, { damping: 0, stiffness: 999 });
+  const cursorY = useSpring(mousePos.y - 3, { damping: 0, stiffness: 999 });
+  const ringX = useSpring(mousePos.x - 18, { damping: 24, stiffness: 140 });
+  const ringY = useSpring(mousePos.y - 18, { damping: 24, stiffness: 140 });
 
   useEffect(() => {
     const onMouseMove = (e) => {
       setMousePos({ x: e.clientX, y: e.clientY });
       if (!isVisible) setIsVisible(true);
+
+      if (ghostsRef.current.length > 0) {
+        ghostsRef.current.forEach((ghost) => {
+          ghost.targetX = e.clientX;
+          ghost.targetY = e.clientY;
+        });
+      }
     };
+
     const onMouseEnter = () => setIsVisible(true);
     const onMouseLeave = () => setIsVisible(false);
     const onMouseDown = () => setIsClicking(true);
@@ -28,8 +36,12 @@ export default function CustomCursor() {
 
     const handleHover = (e) => {
       const target = e.target;
-      const interactive = target.closest('a, button, [role="button"], input, textarea, .cursor-pointer');
+      const interactive = target.closest('a, button, [role="button"], input, textarea, .cursor-pointer, [data-cursor="view"]');
       setIsHovering(!!interactive);
+      if (interactive) {
+        const label = interactive.getAttribute("data-cursor-label") || (interactive.tagName === "A" ? "VIEW" : "CLICK");
+        setHoverLabel(label);
+      }
     };
 
     window.addEventListener("mousemove", onMouseMove);
@@ -38,6 +50,17 @@ export default function CustomCursor() {
     window.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mouseup", onMouseUp);
     window.addEventListener("mouseover", handleHover);
+
+    const ghosts = Array.from({ length: 8 }, (_, i) => ({
+      x: -100,
+      y: -100,
+      targetX: -100,
+      targetY: -100,
+      delay: (i + 1) * 16,
+      size: 4,
+      opacity: 0.4 - i * 0.05,
+    }));
+    ghostsRef.current = ghosts;
 
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
@@ -50,66 +73,17 @@ export default function CustomCursor() {
   }, [isVisible]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let animationFrameId;
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-    window.addEventListener("resize", resize);
-
-    const particles = Array.from({ length: 30 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      size: Math.random() * 1.5 + 0.5,
-      opacity: Math.random() * 0.5 + 0.1,
-    }));
-    particlesRef.current = particles;
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 215, 0, ${p.opacity})`;
-        ctx.fill();
+    if (!isVisible) return;
+    const animate = () => {
+      ghostsRef.current.forEach((ghost) => {
+        ghost.x += (ghost.targetX - ghost.x) * 0.3;
+        ghost.y += (ghost.targetY - ghost.y) * 0.3;
       });
-
-      if (isVisible && mousePos.x > 0 && mousePos.y > 0) {
-        particles.forEach((p) => {
-          const dx = mousePos.x - p.x;
-          const dy = mousePos.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            const force = (120 - dist) / 120;
-            p.vx -= (dx / dist) * force * 0.02;
-            p.vy -= (dy / dist) * force * 0.02;
-          }
-        });
-      }
-
-      animationFrameId = requestAnimationFrame(draw);
+      rafRef.current = requestAnimationFrame(animate);
     };
-    draw();
-
-    return () => {
-      window.removeEventListener("resize", resize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [isVisible, mousePos.x, mousePos.y]);
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [isVisible]);
 
   if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
     return null;
@@ -117,52 +91,77 @@ export default function CustomCursor() {
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        className="fixed inset-0 pointer-events-none z-[9998]"
-        style={{ opacity: isVisible ? 1 : 0 }}
+      {/* Ghost trail */}
+      {isVisible && ghostsRef.current.map((ghost, i) => (
+        <motion.div
+          key={`ghost-${i}`}
+          className="fixed top-0 left-0 pointer-events-none z-[9997] rounded-full"
+          style={{
+            width: ghost.size,
+            height: ghost.size,
+            x: ghost.x - ghost.size / 2,
+            y: ghost.y - ghost.size / 2,
+            opacity: ghost.opacity,
+            backgroundColor: "#ff6b6b",
+          }}
+        />
+      ))}
+
+      {/* Inner dot */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full"
+        style={{
+          width: 6,
+          height: 6,
+          x: cursorX,
+          y: cursorY,
+          scale: isHovering ? 0 : 1,
+          opacity: isHovering ? 0 : 1,
+          backgroundColor: "#ff6b6b",
+          transition: "scale 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s",
+        }}
       />
-      {isVisible && (
-        <>
-          <motion.div
-            className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full mix-blend-difference"
-            style={{
-              width: 8,
-              height: 8,
-              x: cursorX,
-              y: cursorY,
-            }}
+
+      {/* Outer ring */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[9998] rounded-full flex items-center justify-center"
+        style={{
+          width: isHovering ? 80 : 36,
+          height: isHovering ? 80 : 36,
+          x: ringX,
+          y: ringY,
+          border: `1.5px solid ${isHovering ? "rgba(255,107,107,0.3)" : "rgba(255,107,107,0.6)"}`,
+          backgroundColor: isHovering ? "rgba(255,107,107,0.06)" : "transparent",
+          transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+        }}
+      >
+        {isHovering && (
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-[8px] font-bold tracking-widest text-coral uppercase"
           >
-            <div className="w-2 h-2 rounded-full bg-[#FFD700]" />
-          </motion.div>
-          <motion.div
-            className="fixed top-0 left-0 pointer-events-none z-[9998] rounded-full border border-[#FFD700]/40"
-            style={{
-              width: 44,
-              height: 44,
-              x: ringX,
-              y: ringY,
-              scale: isHovering ? 1.5 : 1,
-              opacity: isHovering ? 0.6 : 0.3,
-              transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-            }}
-          />
-          {isClicking && (
-            <motion.div
-              className="fixed top-0 left-0 pointer-events-none z-[9997] rounded-full bg-[#FFD700]/20"
-              style={{
-                width: 60,
-                height: 60,
-                x: cursorX,
-                y: cursorY,
-                scale: 1.8,
-                opacity: 0,
-                transition: "all 0.5s ease-out",
-              }}
-              animate={{ scale: 2.5, opacity: 0 }}
-            />
-          )}
-        </>
+            {hoverLabel}
+          </motion.span>
+        )}
+      </motion.div>
+
+      {/* Click ripple */}
+      {isClicking && (
+        <motion.div
+          className="fixed top-0 left-0 pointer-events-none z-[9997] rounded-full"
+          style={{
+            width: 60,
+            height: 60,
+            x: cursorX,
+            y: cursorY,
+            backgroundColor: "rgba(255,107,107,0.15)",
+            scale: 2,
+            opacity: 0,
+          }}
+          animate={{ scale: 2.5, opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        />
       )}
     </>
   );
