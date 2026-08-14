@@ -63,9 +63,9 @@ export const PROJECTS = [
   {
     id: 1,
     title: "AI Applications",
-    image: "/aiagent.png",
+    image: "https://img.sanishtech.com/u/209e0171e5f34371c5d24a9af04fc372.png",
     category: "AI",
-    tags: ["Next.js", "React", "TypeScript", "Gemini API"],
+    tags: ["Next.js", "React", "TypeScript", "Gemini API", "MongoDB", "Node.js", "Express.js"],
     description:
       "An AI-powered assistant frontend providing intelligent real-time chat, context-aware visual responses, Gemini API integration, dynamic streaming animations, and a futuristic cyberpunk UI.",
     github: "https://github.com/Siam24857/AI-agent-cleint.git",
@@ -75,19 +75,19 @@ export const PROJECTS = [
   {
     id: 2,
     title: "Task Management System",
-    image: "/Keenkeper.png",
+    image: "https://img.sanishtech.com/u/fe3a2d5787ea8ed3cbd5805652645ec9.png",
     category: "Full Stack",
     tags: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
     description:
       "A comprehensive task management platform with drag-and-drop boards, real-time collaboration, team workspaces, and analytics dashboards.",
     github: "https://github.com/Siam24857",
-    link: "https://github.com/Siam24857",
+    link: "https://keenkeeper-web-platform.netlify.app",
     featured: false,
   },
   {
     id: 3,
     title: "ERP System",
-    image: "/clodfare.png",
+    image: "https://img.sanishtech.com/u/2d50e7b34b58f46a3f76bf0aad098e14.png",
     category: "Full Stack",
     tags: ["Next.js", "React", "TypeScript", "Node.js"],
     description:
@@ -99,9 +99,18 @@ export const PROJECTS = [
   {
     id: 4,
     title: "Developer Tools",
-    image: "/fable.png",
+    image: "https://img.sanishtech.com/u/21fbe56b03d8b4c109051a9b5ea1a97d.png",
     category: "Frontend",
-    tags: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+    tags: [
+  "JavaScript",
+  "Next.js",
+  "Tailwind CSS",
+  "Vite",
+  "Node.js",
+  "Express.js",
+  "MongoDB",
+  "Vercel",
+],
     description:
       "A suite of developer utilities including code formatters, API testers, color palette generators, and snippet managers.",
     github: "https://github.com/Siam24857/Fab-E-book-platform.git",
@@ -111,7 +120,7 @@ export const PROJECTS = [
   {
     id: 5,
     title: "Full Stack Applications",
-    image: "/marketplace.png",
+    image: "https://img.sanishtech.com/u/95d1b1d196df8da86b0ec155a15d31fb.png",
     category: "Full Stack",
     tags: ["React", "TypeScript", "Node.js", "Express"],
     description:
