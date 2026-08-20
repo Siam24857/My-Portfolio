@@ -7,22 +7,23 @@ import porfolioimg from "../asset/portfolio.png";
 const STATS = [
   { value: 3, suffix: "+", label: "Years Building" },
   { value: 30, suffix: "+", label: "Projects Shipped" },
-  { value: 15, suffix: "+", label: "Technologies" },
+  { value: 70, suffix: "+", label: "Technologies" },
 ];
 
 const EXPERTISE = [
-  "Modern React & Next.js architecture",
-  "Responsive, accessible component systems",
-  "Smooth animation & micro-interactions",
-  "Performance-first, SEO-ready delivery",
+  "Full-stack architecture across MERN and Next.js ecosystems",
+  "Responsive, accessible component systems with modern UI/UX",
+  "Smooth animation, micro-interactions, and 3D web experiences",
+  "Performance-first, SEO-ready delivery with cloud deployment",
+  "AI-assisted development with LLMs and modern tooling",
 ];
 
 const SKILL_BARS = [
-  { name: "React & Next.js", level: 96, color: "#ff6b6b" },
+  { name: "Full-Stack Development", level: 94, color: "#ff6b6b" },
   { name: "JavaScript / TypeScript", level: 95, color: "#ff6b6b" },
-  { name: "Node.js / Express", level: 90, color: "#f5a623" },
-  { name: "HTML / CSS / Tailwind", level: 96, color: "#ff6b6b" },
-  { name: "UI / UX Design", level: 85, color: "#f5a623" },
+  { name: "React & Next.js Ecosystem", level: 96, color: "#f5a623" },
+  { name: "Node.js / Express / APIs", level: 92, color: "#f5a623" },
+  { name: "Databases & ORM", level: 90, color: "#7c3aed" },
 ];
 
 function Counter({ to, suffix }) {
@@ -83,7 +84,7 @@ export default function About() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 px-6 overflow-hidden bg-void"
+      className="relative py-32 px-6 overflow-hidden"
       id="about"
     >
       <div className="container-page relative">

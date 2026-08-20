@@ -96,18 +96,18 @@ export default function Hero() {
     let iterations = 0;
     const interval = setInterval(() => {
       setGlitchText(
-        "DIGITAL"
+        "FULL-STACK"
           .split("")
           .map((char, index) => {
-            if (index < iterations) return "DIGITAL"[index];
+            if (index < iterations) return "FULL-STACK"[index];
             return chars[Math.floor(Math.random() * chars.length)];
           })
           .join("")
       );
       iterations += 1 / 3;
-      if (iterations >= "DIGITAL".length) {
+      if (iterations >= "FULL-STACK".length) {
         clearInterval(interval);
-        setGlitchText("DIGITAL");
+        setGlitchText("FULL-STACK");
         setIsGlitching(false);
       }
     }, 50);
@@ -118,7 +118,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center overflow-hidden bg-void"
+      className="relative min-h-screen flex items-center overflow-hidden"
       id="home"
     >
       {/* Three.js Particle Background */}
@@ -130,6 +130,46 @@ export default function Hero() {
         >
           <Scene />
         </Canvas>
+      </div>
+
+      {/* Firefly Banner */}
+      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+        {Array.from({ length: 15 }).map((_, i) => {
+          const rotationSpeed = `${Math.floor(Math.random() * 10) + 8}s`;
+          const flashDuration = `${Math.floor(Math.random() * 6) + 5}s`;
+          const flashDelay = `${Math.floor(Math.random() * 8) + 0.5}s`;
+          const moveDuration = `${Math.floor(Math.random() * 200) + 100}s`;
+          const startX = `${Math.floor(Math.random() * 100) - 50}vw`;
+          const startY = `${Math.floor(Math.random() * 100) - 50}vh`;
+          const scale = (Math.random() * 0.75 + 0.25).toFixed(2);
+
+          return (
+            <div
+              key={i}
+              className="firefly"
+              style={{
+                animation: `firefly-move ${moveDuration} ease alternate infinite`,
+                transform: `translate(${startX}, ${startY}) scale(${scale})`,
+              }}
+            >
+              <span
+                className="absolute block w-full h-full rounded-full bg-black opacity-40"
+                style={{
+                  animation: `firefly-drift ${rotationSpeed} ease alternate infinite`,
+                  transformOrigin: '-10vw',
+                }}
+              />
+              <span
+                className="absolute block w-full h-full rounded-full bg-white opacity-0"
+                style={{
+                  animation: `firefly-drift ${rotationSpeed} ease alternate infinite, firefly-flash ${flashDuration} ease ${flashDelay} infinite`,
+                  boxShadow: '0 0 0vw 0vw yellow',
+                  transformOrigin: '-10vw',
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
 
       {/* Aesthetic Banner */}
@@ -169,7 +209,7 @@ export default function Hero() {
                   transition={{ duration: 0.8, delay: 0.2 }}
                   className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] font-display"
                 >
-                  <span className="text-outline">{isGlitching ? glitchText : "DIGITAL"}</span>
+                  <span className="text-outline">{isGlitching ? glitchText : "FULL-STACK"}</span>
                 </motion.h1>
 
                 <motion.h1
@@ -189,7 +229,7 @@ export default function Hero() {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-muted font-heading font-medium text-base sm:text-lg leading-relaxed mb-10"
               >
-                Full-Stack Developer · UI Engineer · Creative Coder
+                Full-Stack Developer · MERN & Next.js · AI-Enhanced Engineering
                 <span className="inline-block w-[2px] h-5 bg-coral ml-1 animate-blink" />
               </motion.p>
 

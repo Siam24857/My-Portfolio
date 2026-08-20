@@ -9,7 +9,7 @@ export default function Experience() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 px-6 overflow-hidden bg-void"
+      className="relative py-32 px-6 overflow-hidden"
       id="journey"
     >
       <div className="container-page">

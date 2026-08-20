@@ -15,7 +15,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="relative py-32 px-6 bg-void" id="contact">
+    <section className="relative py-32 px-6" id="contact">
       <div className="container-page">
         <div className="text-center max-w-4xl mx-auto mb-16">
           <motion.h2

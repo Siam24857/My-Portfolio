@@ -36,7 +36,7 @@ export const metadata = {
     template: "%s | Sheikh Siam",
   },
   description:
-    "Full-Stack Developer specializing in React, Next.js, TypeScript, and modern web technologies. Building exceptional digital experiences.",
+    "Full-Stack Developer specializing in React, Next.js, TypeScript, Node.js, Express, MongoDB, PostgreSQL, Prisma, AI integration, and modern web technologies. Building exceptional digital experiences.",
   keywords: [
     "Full-Stack Developer",
     "Frontend Engineer",
@@ -103,11 +103,12 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       className={`h-full antialiased ${inter.variable} ${jetbrainsMono.variable} ${syne.variable} ${spaceGrotesk.variable}`}
-      style={{ cursor: 'none' }}
     >
+      <head>
+        <link rel="stylesheet" href="https://cdn.cursors-4u.net/cursors/animated/geared-copper-alternate-6f1a80e1-64.css" />
+      </head>
       <body
-        className="min-h-full flex flex-col bg-void text-text overflow-x-hidden"
-        style={{ cursor: 'none' }}
+        className="min-h-full flex flex-col text-text overflow-x-hidden"
       >
         <AppProviders>{children}</AppProviders>
       </body>

@@ -3,34 +3,91 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState, useCallback } from "react";
 import {
   SiHtml5, SiCss, SiJavascript, SiReact, SiNextdotjs, SiTypescript,
-  SiTailwindcss, SiFigma, SiThreedotjs, SiGit, SiGithub, SiNpm, SiVite,
-  SiNodedotjs, SiExpress, SiMongodb, SiDocker, SiFirebase, SiVercel
+  SiTailwindcss, SiBootstrap, SiFigma, SiThreedotjs, SiGit, SiGithub, SiNpm, SiVite,
+  SiNodedotjs, SiExpress, SiMongodb, SiDocker, SiFirebase, SiVercel, SiPostgresql,
+  SiPrisma, SiGoogle, SiGreensock, SiNetlify, SiPostman
 } from "react-icons/si";
 import { VscVscode } from "react-icons/vsc";
 import {
   MdDevices, MdAutoAwesome, MdAnimation, MdBrush, MdSwapVert,
-  MdApi, MdSpeed, MdLayers, MdStorage
+  MdApi, MdSpeed, MdLayers, MdStorage, MdLock, MdBugReport, MdShowChart
 } from "react-icons/md";
 import { SKILLS_DATA } from "@/lib/data";
 
 const ICON_MAP = {
   "React.js": SiReact,
   "Next.js": SiNextdotjs,
+  "Next.js 14": SiNextdotjs,
+  "Next.js Full-Stack": SiNextdotjs,
   TypeScript: SiTypescript,
   "Tailwind CSS": SiTailwindcss,
   JavaScript: SiJavascript,
+  "HTML5": SiHtml5,
+  "CSS3": SiCss,
+  "JSX": SiReact,
+  "Bootstrap": SiBootstrap,
   "Node.js": SiNodedotjs,
   "Express.js": SiExpress,
-  APIs: MdApi,
+  "APIs": MdApi,
+  "REST APIs": MdApi,
+  "API Development": MdApi,
+  "API Integration": MdApi,
+  "Third-Party API Integration": MdApi,
+  "Authentication APIs": MdLock,
+  "Google APIs": SiGoogle,
   Database: SiMongodb,
+  "MongoDB": SiMongodb,
+  "MongoDB Atlas": SiMongodb,
+  "MongoDB Query Operators": SiMongodb,
+  "PostgreSQL": SiPostgresql,
+  "Prisma ORM": SiPrisma,
   Git: SiGit,
-  Docker: SiDocker,
-  Firebase: SiFirebase,
-  Deployment: SiVercel,
+  "GitHub": SiGithub,
+  "VS Code": VscVscode,
+  Postman: SiPostman,
   Figma: SiFigma,
+  Vercel: SiVercel,
+  Netlify: SiNetlify,
+  Deployment: SiVercel,
   "UI Design": MdBrush,
   Animation: MdAnimation,
+  "CSS Animations": MdAnimation,
+  "Framer Motion": MdAnimation,
+  "Lenis": MdAnimation,
   Responsive: MdDevices,
+  "Responsive Web Design": MdDevices,
+  "Responsive UI/UX": MdDevices,
+  "CRUD Operations": MdSwapVert,
+  "Database Design": MdStorage,
+  "Database Integration": MdStorage,
+  "Server-Side Development": MdStorage,
+  "JWT": MdLock,
+  "JWT Authentication": MdLock,
+  "Better Auth": MdLock,
+  "Authentication & Authorization": MdLock,
+  "Protected Routes": MdLock,
+  "Role-Based Access Control": MdLock,
+  "Role-Based Authentication": MdLock,
+  "Aggregation Pipeline": SiMongodb,
+  "AI-Assisted Development": MdAutoAwesome,
+  "Front-End AI Engineering": MdAutoAwesome,
+  "AI Tools & LLMs": MdAutoAwesome,
+  "GSAP": SiGreensock,
+  "Recharts": MdShowChart,
+  "HeroUI": SiReact,
+  "DaisyUI": SiReact,
+  "Debugging & Troubleshooting": MdBugReport,
+  "Modern UI Development": MdBrush,
+  "MERN Stack": SiMongodb,
+  "Full-Stack Web Development": SiReact,
+  "Full-Stack Development": SiReact,
+  "Frontend Development": SiReact,
+  "Backend Development": SiNodedotjs,
+  "Ollama": SiReact,
+  "OpenAI API": SiReact,
+  "Gemini API": SiGoogle,
+  "Claude API": SiReact,
+  "Google API Integration": SiGoogle,
 };
 
 function AnimatedCounter({ target, duration = 1000 }) {
@@ -130,7 +187,7 @@ export default function Skills() {
   return (
     <section
       ref={containerRef}
-      className="relative py-32 px-6 overflow-hidden bg-void"
+      className="relative py-32 px-6 overflow-hidden"
       id="skills"
     >
       {/* Floating orbs */}

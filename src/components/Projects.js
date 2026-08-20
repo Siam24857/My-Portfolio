@@ -128,7 +128,7 @@ export default function Projects() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 px-6 overflow-hidden bg-void"
+      className="relative py-32 px-6 overflow-hidden"
       id="projects"
     >
       <motion.div
